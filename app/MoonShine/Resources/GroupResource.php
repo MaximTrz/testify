@@ -7,6 +7,7 @@ namespace App\MoonShine\Resources;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Group;
 
+use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\ID;
@@ -42,7 +43,8 @@ class GroupResource extends ModelResource
         return [
             Box::make([
                 ID::make(),
-                Text::make('Наименование', 'name')
+                Text::make('Наименование', 'name'),
+                HasMany::make('Студенты', 'users', resource: UserResource::class)->creatable()
             ])
         ];
     }

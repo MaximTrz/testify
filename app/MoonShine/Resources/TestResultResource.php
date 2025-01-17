@@ -30,7 +30,10 @@ class TestResultResource extends ModelResource
     protected function indexFields(): iterable
     {
         return [
-            ID::make()->sortable(),
+            //ID::make()->sortable(),
+            BelongsTo::make('Студент', 'user', resource: UserResource::class, formatted:  'name'),
+            BelongsTo::make('Тест', 'test', resource: TestResource::class, formatted:  'title'),
+            Number::make('Оценка', 'score')
         ];
     }
 
@@ -41,9 +44,9 @@ class TestResultResource extends ModelResource
     {
         return [
             Box::make([
-                ID::make(),
-                BelongsTo::make('Тест', 'test', resource: TestResource::class),
-                BelongsTo::make('Студент', 'user', resource: UserResource::class),
+                //ID::make(),
+                BelongsTo::make('Тест', 'test', resource: TestResource::class)->disabled(),
+                BelongsTo::make('Студент', 'user', resource: UserResource::class, formatted:  'name')->disabled(),
                 Number::make('Оценка', 'score')
             ])
         ];
