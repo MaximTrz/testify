@@ -1,13 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
 
-                <div class="card-body">
+            <div class="flex-shrink-0 p-3 bg-white">
+                <div>
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}
@@ -15,9 +11,8 @@
                     @endif
 
                     {{ __('You are logged in!') }}
+
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+
 @endsection
