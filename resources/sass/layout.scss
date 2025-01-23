@@ -1,0 +1,29 @@
+.layout{    
+    min-height: 100vh;
+    display: grid;
+	grid-template-rows: auto 1fr auto;
+	grid-template-columns: auto auto auto;
+
+    gap: 20px;
+
+    grid-template-areas: 
+        "header header header"
+        "main main main"
+        "footer footer footer";
+    
+    &__header{
+        background-color: $base-color;
+        grid-area: header;
+    }
+
+    &__main{
+       grid-area: main;
+       height: 100%;       
+    } 
+        
+    &__footer{
+        background-color: $base-color;
+        grid-area: footer;
+    }
+
+}

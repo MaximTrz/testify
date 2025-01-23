@@ -1,0 +1,9 @@
+.header{
+    &__logo{
+        font-family: "Poller One", serif;
+        font-size: 64px;
+        font-weight: 400;
+        text-align: left;
+        color: $base-title;
+    }
+}
