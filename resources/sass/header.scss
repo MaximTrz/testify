@@ -1,9 +1,46 @@
 .header{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    align-items: center;
+    min-height: 140px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    &__group{
+        display: flex;
+        align-items: center;
+        gap: 30px;   
+        &-name{
+            font-family: $base-font;
+            color: $base-title;
+            font-size: 48px;
+            font-weight: 400;
+        }
+        &-image{            
+            max-width: 65px;
+        }
+    }
     &__logo{
-        font-family: "Poller One", serif;
+        font-family: "Poller One", serif;        
         font-size: 64px;
         font-weight: 400;
-        text-align: left;
-        color: $base-title;
+        text-align: center;
+        color: $base-title;        
+    }
+    &__person{
+        display: flex;
+        align-items: center;  
+        gap: 10px;      
+        &-name{            
+            max-width: 300px;
+            font-family: $font-family-sans-serif;
+            color: $base-title;
+            font-size: 30px;
+            font-weight: 400;
+            text-align: center;
+        }
+        &-image{
+            max-width: 65px;
+        }
     }
 }

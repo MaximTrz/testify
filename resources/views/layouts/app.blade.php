@@ -21,36 +21,26 @@
         <header class="layout__header">
 
             <div class="container">
+
                 <div class="header">
                     @auth
                         <div class="header__group">
-                            А-25-1
+                            <img class="header__group-image" src="img/comp.svg" alt="Группа">
+                            <div class="header__group-name">                                
+                                {{ Auth::user()->group->name }}
+                            </div>                           
                         </div>
                     @endauth
 
                     <div class="header__logo">Testify</div>
 
                     @auth
-                        <div class="header__preson">
+                        <div class="header__person">
                             <div class="header__person-name">
-                                Петрова Марина Александровна
+                                {{ Auth::user()->name }}
                             </div>
-                            <img class="header__logo-image" src="" alt="Студент">
+                            <img class="header__person-image" src="img/student.svg" alt="Студент">
                         </div>
-
-                    <div>
-
-                        <a class="dropdown-item" href="{{ route('logout') }}"
-                           onclick="event.preventDefault();
-                                                         document.getElementById('logout-form').submit();">
-                            {{ __('Выход') }}
-                        </a>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                            @csrf
-                        </form>
-                        
-                    </div>
-
                     @endauth
 
                 </div>
@@ -71,7 +61,20 @@
                 <div><a href="#">1</a></div>
                 <div><a href="#">1</a></div>
                 <div><a href="#">1</a></div>
-                <div><a href="#">1</a></div>                            
+                <div><a href="#">1</a></div>
+                
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{{ route('logout') }}"
+                        onclick="event.preventDefault();
+                                        document.getElementById('logout-form').submit();">
+                        {{ __('Выход') }}
+                    </a>
+
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
+                </div>
+                
             </aside>
             @endauth
             
@@ -86,12 +89,16 @@
 
         </div>
 
-
         <footer class="layout__footer">
 
             <div class="container">
                 <div class="footer">
-                    <div class="footer__link">Обратная связь</div>
+                    
+                        <a class="footer__link" href="#">
+                            Обратная связь
+                             <img src="img/sferum.svg" alt="sferum">
+                        </a>                      
+                   
                     <div class="footer__date">2025</div>
                 </div>
             </div>

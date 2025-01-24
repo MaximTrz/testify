@@ -1,0 +1,20 @@
+.footer{
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 50px;
+
+    &__link{
+        font-family: $font-family-sans-serif;
+        display: flex;
+        gap: 10px;
+        align-items: center;  
+        text-decoration: none;
+        color: rgba(0, 0, 0, 1);
+
+    }
+    &__date{
+        font-family: "Poller One", serif;
+        font-size: 14px;
+        font-weight: 400;
+    }
+}
