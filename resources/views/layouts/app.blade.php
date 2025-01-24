@@ -56,12 +56,29 @@
             @endauth                       
 
             @auth
-            <aside class="aside">
-                <div><a href="#">1</a></div>
-                <div><a href="#">1</a></div>
-                <div><a href="#">1</a></div>
-                <div><a href="#">1</a></div>
-                <div><a href="#">1</a></div>
+
+            <aside class="sidebar">
+
+                <nav class="sidebar__navigation">
+
+                    <ul class="sidebar__list">
+
+                        <li class="sidebar__item">                            
+                            <a href="#section1" class="sidebar__link">
+                                <img class="sidebar__icon" src="img/inwork.svg" alt="">
+                                Заданные тесты
+                            </a>
+                        </li>
+
+                        <li class="sidebar__item">                            
+                            <a href="#section2" class="sidebar__link">
+                                <img class="sidebar__icon" src="img/done.svg" alt="">    
+                            Выполненные тесты</a>
+                        </li>
+ 
+                    </ul>
+
+                </nav>
                 
                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="{{ route('logout') }}"
