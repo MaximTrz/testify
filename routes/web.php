@@ -13,8 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
-
 Auth::routes();
 
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('inwork', [\App\Http\Controllers\TestController::class, 'index'])->name('inwork');
+
+Route::get('completed', [\App\Http\Controllers\TestController::class, 'completed'])->name('completed');
