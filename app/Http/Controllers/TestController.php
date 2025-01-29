@@ -21,14 +21,9 @@ class TestController extends Controller
 
     public function index()
     {
-
-
         $user = Auth::user();
 
-
         $group = $user->group;
-
-
 
         $currentTimestamp = Carbon::now();
 
@@ -37,17 +32,36 @@ class TestController extends Controller
             ->wherePivot('available_until', '>=', $currentTimestamp)
             ->get();
 
+        return view('tests.inwork', compact('tests'));
 
-        echo '<pre>';
-            var_dump($tests);
-        echo '</pre>';
-
-        return view('tests.inwork');
     }
 
     public function completed()
     {
         return view('tests.completed');
+    }
+
+    public function show($id)
+    {
+        $user = Auth::user();
+
+        $group = $user->group;
+
+        $currentTimestamp = Carbon::now();
+
+        $test = $group->tests()
+            ->with('gradingCriteria')
+            ->where('tests.id', $id)
+            ->wherePivot('available_from', '<=', $currentTimestamp)
+            ->wherePivot('available_until', '>=', $currentTimestamp)
+            ->withCount('questions')
+            ->first();
+
+        if (!$test) {
+            abort(404, 'Тест не найден или недоступен.');
+        }
+
+        return view('tests.show', compact('test'));
     }
 
 }

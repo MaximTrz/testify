@@ -22,3 +22,5 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('inwork', [\App\Http\Controllers\TestController::class, 'index'])->name('inwork');
 
 Route::get('completed', [\App\Http\Controllers\TestController::class, 'completed'])->name('completed');
+
+Route::get('/tests/{id}', [\App\Http\Controllers\TestController::class, 'show'])->name('tests.show');

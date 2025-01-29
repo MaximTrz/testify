@@ -16,10 +16,17 @@ class Group extends Model
         return $this->hasMany(GroupStudent::class); // Связь "один ко многим" с таблицей GroupStudent
     }
 
+//    public function tests()
+//    {
+//        return $this->belongsToMany(Test::class, 'test_group', 'group_id', 'test_id'); // Связь "многие ко многим" с тестами
+//    }
+
     public function tests()
     {
-        return $this->belongsToMany(Test::class, 'test_group', 'group_id', 'test_id'); // Связь "многие ко многим" с тестами
+        return $this->belongsToMany(Test::class, 'test_group')
+            ->withPivot('available_from', 'available_until');
     }
+
 
     public function users()
     {

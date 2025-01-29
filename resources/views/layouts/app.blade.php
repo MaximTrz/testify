@@ -11,7 +11,7 @@
     <title>{{ config('app.name', 'Testify') }}</title>
 
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    @vite(['resources/sass/app.scss', 'resources/js/app.tsx'])
 </head>
 
 
@@ -25,10 +25,10 @@
                 <div class="header">
                     @auth
                         <div class="header__group">
-                            <img class="header__group-image" src="img/comp.svg" alt="Группа">
-                            <div class="header__group-name">                                
+                            <img class="header__group-image" src="{{ asset('img/comp.svg') }}" alt="Группа">
+                            <div class="header__group-name">
                                 {{ Auth::user()->group->name }}
-                            </div>                           
+                            </div>
                         </div>
                     @endauth
 
@@ -39,7 +39,7 @@
                             <div class="header__person-name">
                                 {{ Auth::user()->name }}
                             </div>
-                            <img class="header__person-image" src="img/student.svg" alt="Студент">
+                            <img class="header__person-image" src="{{ asset('img/student.svg') }}" alt="Студент">
                         </div>
                     @endauth
 
@@ -49,11 +49,11 @@
         </header>
 
         <div class="layout__main">
-            
+
             @auth
                 <div class="container --h100">
                     <div class="main">
-            @endauth                       
+            @endauth
 
             @auth
 
@@ -63,23 +63,23 @@
 
                     <ul class="sidebar__list">
 
-                        <li class="sidebar__item">                            
-                            <a href="#section1" class="sidebar__link">
-                                <img class="sidebar__icon" src="img/inwork.svg" alt="">
+                        <li class="sidebar__item">
+                            <a href="{{ route('inwork') }}" class="sidebar__link">
+                                <img class="sidebar__icon" src="{{ asset('img/inwork.svg') }}" alt="all">
                                 Заданные тесты
                             </a>
                         </li>
 
-                        <li class="sidebar__item">                            
+                        <li class="sidebar__item">
                             <a href="#section2" class="sidebar__link">
-                                <img class="sidebar__icon" src="img/done.svg" alt="">    
+                                <img class="sidebar__icon" src=" {{ asset('img/done.svg') }}" alt="done">
                             Выполненные тесты</a>
                         </li>
- 
+
                     </ul>
 
                 </nav>
-                
+
                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="{{ route('logout') }}"
                         onclick="event.preventDefault();
@@ -91,17 +91,17 @@
                         @csrf
                     </form>
                 </div>
-                
+
             </aside>
             @endauth
-            
-            <main class="content"> 
+
+            <main class="content">
                 @yield('content')
             </main>
 
             @auth
                     </div>
-                </div>  
+                </div>
             @endauth
 
         </div>
@@ -110,12 +110,12 @@
 
             <div class="container">
                 <div class="footer">
-                    
+
                         <a class="footer__link" href="#">
                             Обратная связь
-                             <img src="img/sferum.svg" alt="sferum">
-                        </a>                      
-                   
+                             <img src="{{ asset('img/sferum.svg') }}" alt="sferum">
+                        </a>
+
                     <div class="footer__date">2025</div>
                 </div>
             </div>

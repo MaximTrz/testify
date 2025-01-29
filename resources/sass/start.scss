@@ -1,0 +1,14 @@
+.start{
+    display: flex;
+    align-items: center;
+    font-family: $font-family-sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: $base-title;
+    &__icon{
+        transform: translateX(-8px);
+        padding: 0;
+    }
+}

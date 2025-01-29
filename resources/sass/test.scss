@@ -1,0 +1,56 @@
+.test{
+    &__title{
+        font-family: $font-family-sans-serif;
+        font-size: 32px;
+        font-weight: 400;
+        margin-bottom: 10px;
+    }
+
+    &__time{
+        font-family: $font-family-sans-serif;
+        font-size: 24px;
+        font-weight: 400;
+        margin-bottom: 30px;
+    }
+    &__instruction{
+        font-family: $font-family-sans-serif;
+        font-size: 24px;
+        font-weight: 400;
+        margin-bottom: 30px;
+    }
+    &__instruction-title{
+        font-family: $font-family-sans-serif;
+        font-size: 24px;
+        font-weight: 400;
+        color: $base-title;
+        margin-bottom: 10px;
+        display: block;
+    }
+    &__instruction-block{
+        font-family: $font-family-sans-serif;
+        margin-bottom: 10px;
+    }
+
+    &__criteria{
+        margin-bottom: 30px;
+    }
+
+    &__criteria-title{
+        font-family: $font-family-sans-serif;
+        color: $base-title;
+        font-size: 24px;
+        font-weight: 400;
+    }
+    &__criteria-list{
+        list-style: none;
+        padding: 0;
+        margin: 0;        
+    }
+    &__criteria-item{
+        font-family: $font-family-sans-serif;
+        font-size: 24px;
+        font-weight: 400;
+    }
+
+
+}

@@ -15,8 +15,6 @@ class Test extends Model
         'title',
         'time_limit',
         'teacher_id',
-        'available_from',
-        'available_until',
         'status',
     ];
 
@@ -35,10 +33,13 @@ class Test extends Model
         return $this->hasMany(GradingCriteria::class);
     }
 
-    public function testGroup()
+
+    public function groups()
     {
-        return $this->hasMany(TestGroup::class);
+        return $this->belongsToMany(Group::class, 'test_group')
+            ->withPivot('available_from', 'available_until');
     }
+
 
     public function results()
     {
