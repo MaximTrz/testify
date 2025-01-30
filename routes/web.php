@@ -24,3 +24,5 @@ Route::get('inwork', [\App\Http\Controllers\TestController::class, 'index'])->na
 Route::get('completed', [\App\Http\Controllers\TestController::class, 'completed'])->name('completed');
 
 Route::get('/tests/{id}', [\App\Http\Controllers\TestController::class, 'show'])->name('tests.show');
+
+

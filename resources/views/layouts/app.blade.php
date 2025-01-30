@@ -16,6 +16,14 @@
 
 
 <body>
+
+
+
+    <script>
+        window.authToken = "{{ session('authToken') }}";
+        console.log(window.authToken)
+    </script>
+
     <div class="layout">
 
         <header class="layout__header">

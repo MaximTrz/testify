@@ -64,4 +64,27 @@ class TestController extends Controller
         return view('tests.show', compact('test'));
     }
 
+    public function getTest($id)
+    {
+        $user = Auth::user();
+        $group = $user->group;
+        $currentTimestamp = Carbon::now();
+
+        $test = $group->tests()
+            ->with('gradingCriteria', 'questions.answers')
+            ->where('tests.id', $id)
+            ->wherePivot('available_from', '<=', $currentTimestamp)
+            ->wherePivot('available_until', '>=', $currentTimestamp)
+            //->withCount('questions')
+            ->first();
+
+        if (!$test) {
+            return response()->json([
+                'message' => 'Тест не найден или недоступен.'
+            ], 404);
+        }
+
+        return response()->json($test);
+    }
+
 }
