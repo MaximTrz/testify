@@ -1,19 +1,24 @@
 import * as React from "react";
+import Description from "./pages/description";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function Router() {
-  return (
-    <BrowserRouter
-      future={{
-        v7_startTransition: true,
-        v7_relativeSplatPath: true,
-      }}
-    >
-      <Routes>
-        <Route path="/tests/:id" element={<div>Привет, Тест!</div>} />
-      </Routes>
-    </BrowserRouter>
-  );
+    return (
+        <BrowserRouter
+            future={{
+                v7_startTransition: true,
+                v7_relativeSplatPath: true,
+            }}
+        >
+            <Routes>
+                <Route path="/tests/:id" element={<Description />} />
+                <Route
+                    path="/tests/:id/questions"
+                    element={<div>Привет, вопросы</div>}
+                />
+            </Routes>
+        </BrowserRouter>
+    );
 }
 
 export default Router;

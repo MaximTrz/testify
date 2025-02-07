@@ -1,16 +1,20 @@
-.test{
+@import "../../../sass/variables";
+.description{
     &__title{
         font-family: $font-family-sans-serif;
         font-size: 32px;
         font-weight: 400;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
     }
-
     &__time{
         font-family: $font-family-sans-serif;
         font-size: 24px;
         font-weight: 400;
         margin-bottom: 30px;
+    }
+    &__time-title{
+        margin-bottom: 8px;
+        display: block;
     }
     &__instruction{
         font-family: $font-family-sans-serif;
@@ -51,6 +55,4 @@
         font-size: 24px;
         font-weight: 400;
     }
-
-
 }

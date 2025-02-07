@@ -70,13 +70,23 @@ class TestController extends Controller
         $group = $user->group;
         $currentTimestamp = Carbon::now();
 
+
         $test = $group->tests()
-            ->with('gradingCriteria', 'questions.answers')
+            ->with([
+                'gradingCriteria',
+                'questions.answers' => function ($query) {
+                    $query->select('id', 'question_id', 'answer_text');
+                }
+            ])
             ->where('tests.id', $id)
             ->wherePivot('available_from', '<=', $currentTimestamp)
             ->wherePivot('available_until', '>=', $currentTimestamp)
-            //->withCount('questions')
+            // ->withCount('questions') // Uncomment if needed
             ->first();
+
+        $test->pivot->available_from = Carbon::parse($test->pivot->available_from)->translatedFormat('d.m.Y H:i');
+        $test->pivot->available_until = Carbon::parse($test->pivot->available_until)->translatedFormat('d.m.Y H:i');
+
 
         if (!$test) {
             return response()->json([

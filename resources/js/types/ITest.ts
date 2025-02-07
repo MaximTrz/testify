@@ -1,7 +1,7 @@
 import IGradingCriterion from "./IGradingCriterion";
 import IQuestion from "./IQuestion";
 
-interface Test {
+interface ITest {
   id: number;
   title: string;
   time_limit: number;
@@ -16,4 +16,4 @@ interface Test {
   questions: IQuestion[];
 }
 
-export default Test;
+export default ITest;
