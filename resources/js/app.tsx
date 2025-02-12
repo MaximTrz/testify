@@ -4,13 +4,11 @@ import ReactDOM from "react-dom/client";
 import { Provider, useDispatch, useSelector } from "react-redux";
 
 import Router from "./Router";
-
 import { store } from "./store";
 import { RootState } from "./store";
 import { AppDispatch } from "./store";
 
 import { fetchTest } from "./store/reducer";
-
 import { ERequestStatus } from "./types/ERequestStatus";
 
 const rootElement = document.getElementById("test-app");
@@ -23,24 +21,22 @@ if (rootElement) {
     const App = () => {
         const dispatch = useDispatch<AppDispatch>();
 
-        const loaded = useSelector(
-            (state: RootState) =>
-                state.testSlice.testLoaded === ERequestStatus.SUCCEEDED,
+        const testLoaded = useSelector(
+            (state: RootState) => state.testSlice.testLoaded,
         );
 
         const path = window.location.pathname;
         const testId = path.split("/tests/")[1];
 
         useEffect(() => {
-            const data = fetchTest(Number(testId));
-            dispatch(data);
-        }, []);
+            dispatch(fetchTest(Number(testId)));
+        }, [dispatch, testId]);
 
-        return (
-            <div>
-                <Router />
-            </div>
-        );
+        if (testLoaded !== ERequestStatus.SUCCEEDED) {
+            return <div>Загрузка теста...</div>;
+        }
+
+        return <Router />;
     };
 
     root.render(

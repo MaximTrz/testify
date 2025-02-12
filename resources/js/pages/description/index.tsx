@@ -1,26 +1,31 @@
 import * as React from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store";
+import useTest from "../../hooks/useTest";
 import { Link } from "react-router-dom";
 
 import "./style.scss";
 
 const Description: React.FC = () => {
-    const test = useSelector((state: RootState) => state.testSlice.test);
+    const { testItem, getTestStarted } = useTest();
+
+    if (getTestStarted) {
+        return <div>Данный тест больше не доступен</div>;
+    }
 
     return (
         <div className="description">
-            {test ? (
+            {testItem ? (
                 <>
-                    <h1 className="description__title">Тест: {test.title}</h1>
+                    <h1 className="description__title">
+                        Тест: {testItem.title}
+                    </h1>
 
                     <div className="description__time">
                         <strong className="description__time-title">
                             Срок выполнения:
                         </strong>
                         <div>
-                            с {test.pivot.available_from} до{" "}
-                            {test.pivot.available_until}
+                            с {testItem.pivot.available_from} до{" "}
+                            {testItem.pivot.available_until}
                         </div>
                     </div>
 
@@ -29,7 +34,7 @@ const Description: React.FC = () => {
                             Инструкция:{" "}
                         </strong>
                         <p className="description__instruction-block">
-                            Количество вопросов: {test.questions.length}
+                            Количество вопросов: {testItem.questions.length}
                         </p>
                         <p className="description__instruction-block">
                             Исправить выбранный ответ невозможно.
@@ -42,13 +47,13 @@ const Description: React.FC = () => {
                         </p>
                     </div>
 
-                    {test.grading_criteria.length > 0 ? (
+                    {testItem.grading_criteria.length > 0 ? (
                         <div className="description__criteria">
                             <h3 className="description__criteria-title">
                                 Критерии оценки:
                             </h3>
                             <ul className="description__criteria-list">
-                                {test.grading_criteria.map(
+                                {testItem.grading_criteria.map(
                                     (criteria, index) => (
                                         <li
                                             key={index}
@@ -72,7 +77,7 @@ const Description: React.FC = () => {
 
                     <div className="description__start">
                         <Link
-                            to={`/tests/${test.id}/questions`}
+                            to={`/tests/${testItem.id}/questions`}
                             className="start"
                         >
                             <img

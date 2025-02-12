@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\TestResultController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +23,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 
-Route::middleware('auth:api')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
     Route::get('/tests/{id}', [TestController::class, 'getTest']);
+    Route::post('/test-results', [TestResultController::class, 'store']);
 });
+
+

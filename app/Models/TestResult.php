@@ -28,9 +28,6 @@ class TestResult extends Model
         return $this->belongsTo(User::class, 'student_id');
     }
 
-//    public function studentAnswers()
-//    {
-//        return $this->hasMany(StudentAnswer::class);
-//    }
+
 
 }

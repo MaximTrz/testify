@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\TestResult;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Auth;
+
 class TestResultController extends Controller
 {
     /**
@@ -28,7 +30,40 @@ class TestResultController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+            $validated = $request->validate([
+                'test_id' => 'required|exists:tests,id',
+            ]);
+
+            $user = Auth::user();
+
+            if (!$user) {
+                return response()->json([
+                    'message' => 'Пользователь не авторизован.'
+                ], 401);
+            }
+
+            $existingResult = TestResult::where('student_id', $user->id)
+                ->where('test_id', $validated['test_id'])
+                ->first();
+
+            if ($existingResult) {
+                return response()->json([
+                    'message' => 'Результат для этого теста уже сохранён.'
+                ], 409);
+            }
+
+            $testResult = TestResult::create([
+                'student_id' => $user->id,
+                'test_id' => $validated['test_id'],
+            ]);
+
+            return response()->json([
+                'message' => 'Результат успешно сохранён.',
+                'test_result' => $testResult
+            ], 201);
+
+
     }
 
     /**

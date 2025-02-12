@@ -2,15 +2,17 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import ITest from "../types/ITest";
 
 import { ERequestStatus } from "../types/ERequestStatus";
+import shuffleArray from "../utils/shuffleArray";
 
 import ApiService from "../apiService";
 const apiService = new ApiService();
 
-type TState = {
+export type TState = {
     test: ITest | null;
     correct: number;
     incorrect: number;
     currentQuestion: number;
+    started: boolean;
     testLoaded: ERequestStatus;
 };
 
@@ -19,6 +21,7 @@ const initialState: TState = {
     correct: 0,
     incorrect: 0,
     currentQuestion: 0,
+    started: false,
     testLoaded: ERequestStatus.IDLE,
 };
 
@@ -38,9 +41,18 @@ const testSlice = createSlice({
         nextQuestion: (state) => {
             if (state.test) {
                 if (state.currentQuestion < state.test?.questions.length) {
-                    state.currentQuestion += 1;
+                    state.currentQuestion = state.currentQuestion + 1;
                 }
             }
+        },
+        resetTest: (state) => {
+            state.currentQuestion = 0;
+            state.correct = 0;
+            state.incorrect = 0;
+            state.started = false;
+        },
+        setStarted: (state, { payload }: { payload: boolean }) => {
+            state.started = payload;
         },
     },
     extraReducers: (builder) => {
@@ -50,6 +62,7 @@ const testSlice = createSlice({
             })
             .addCase(fetchTest.fulfilled, (state, { payload }) => {
                 state.testLoaded = ERequestStatus.SUCCEEDED;
+                payload.questions = shuffleArray(payload.questions);
                 state.test = payload;
             })
             .addCase(fetchTest.rejected, () => {});
@@ -71,5 +84,5 @@ export const fetchTest = createAsyncThunk<
 
 export default testSlice.reducer;
 
-export const { setTest, incCorrect, incIncorrect, nextQuestion } =
+export const { setTest, incCorrect, incIncorrect, nextQuestion, setStarted } =
     testSlice.actions;
