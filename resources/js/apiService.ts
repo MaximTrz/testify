@@ -27,8 +27,22 @@ export default class ApiService {
         }
     }
 
+    async post(url, data) {
+        try {
+            const response = await axios.post(`${this.baseUrl}${url}`, data);
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response?.data?.message || error.message);
+        }
+    }
+
     async getTest(id) {
         const response = await this.get(`/api/tests/${id}`);
+        return response;
+    }
+
+    async postAnswer(data) {
+        const response = await this.post("/api/student-anwser", data);
         return response;
     }
 }

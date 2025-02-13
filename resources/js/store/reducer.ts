@@ -70,6 +70,19 @@ const testSlice = createSlice({
             .addCase(fetchTest.rejected, (state, { payload }) => {
                 state.errorText = payload;
                 state.testLoaded = ERequestStatus.FAILED;
+            })
+
+            .addCase(sendAnswer.pending, (state) => {
+                state.testLoaded = ERequestStatus.LOADING;
+            })
+            .addCase(sendAnswer.fulfilled, (state, { payload }) => {
+                state.testLoaded = ERequestStatus.SUCCEEDED;
+                payload.questions = shuffleArray(payload.questions);
+                state.test = payload;
+            })
+            .addCase(sendAnswer.rejected, (state, { payload }) => {
+                state.errorText = payload;
+                state.testLoaded = ERequestStatus.FAILED;
             });
     },
 });
@@ -81,6 +94,19 @@ export const fetchTest = createAsyncThunk<
 >("test/fetchTest", async (id, thunkAPI) => {
     try {
         const serverTestData: ITest = await apiService.getTest(id);
+        return serverTestData;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.message);
+    }
+});
+
+export const sendAnswer = createAsyncThunk<
+    ITest,
+    number,
+    { rejectValue: string }
+>("test/sendAnswer", async (payload, thunkAPI) => {
+    try {
+        const serverTestData: ITest = await apiService.postAnswer(payload);
         return serverTestData;
     } catch (error) {
         return thunkAPI.rejectWithValue(error.message);

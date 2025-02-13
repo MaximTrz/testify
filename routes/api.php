@@ -26,6 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/tests/{id}', [TestController::class, 'getTest']);
     Route::post('/test-results', [TestResultController::class, 'store']);
+    Route::post('/student-anwser', [\App\Http\Controllers\StudentAnswerController::class, 'store']);
 });
 
 
