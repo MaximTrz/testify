@@ -12,7 +12,7 @@ function Router() {
             }}
         >
             <Routes>
-                <Route path="/tests/:id/questions" element={<Question />} />
+                <Route path="/tests/:testId/questions" element={<Question />} />
             </Routes>
         </BrowserRouter>
     );
