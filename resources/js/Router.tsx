@@ -1,15 +1,7 @@
 import * as React from "react";
-import { useEffect } from "react";
-import {
-    BrowserRouter,
-    Routes,
-    Route,
-    useLocation,
-    useNavigate,
-} from "react-router-dom";
+
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Question from "./pages/question";
-
-
 
 function Router() {
     return (
@@ -20,12 +12,10 @@ function Router() {
             }}
         >
             <Routes>
-                <Route path="/tests/:id/questions" element={<Question/>} />
+                <Route path="/tests/:id/questions" element={<Question />} />
             </Routes>
         </BrowserRouter>
     );
 }
-
-
 
 export default Router;
