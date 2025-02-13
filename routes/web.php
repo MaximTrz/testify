@@ -25,4 +25,5 @@ Route::get('completed', [\App\Http\Controllers\TestController::class, 'completed
 
 Route::get('/tests/{id}', [\App\Http\Controllers\TestController::class, 'show'])->name('tests.show');
 
+Route::get('/tests/{id}/questions', [\App\Http\Controllers\TestController::class, 'testing'])->name('tests.testing');
 

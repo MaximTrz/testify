@@ -26,7 +26,8 @@ if (rootElement) {
         );
 
         const path = window.location.pathname;
-        const testId = path.split("/tests/")[1];
+        let testId = path.split("/tests/")[1];
+        testId = testId?.split("/")[0];
 
         useEffect(() => {
             dispatch(fetchTest(Number(testId)));

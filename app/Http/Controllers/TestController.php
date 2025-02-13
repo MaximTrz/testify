@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Group;
 use App\Models\Test;
+use App\Models\TestResult;
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\DB;
 
 use Carbon\Carbon;
 
@@ -22,18 +26,21 @@ class TestController extends Controller
     public function index()
     {
         $user = Auth::user();
-
         $group = $user->group;
-
         $currentTimestamp = Carbon::now();
 
+        // Получаем список ID тестов, которые пользователь уже выполнил
+        $completedTestIds = TestResult::where('student_id', $user->id)
+            ->pluck('test_id');
+
+        // Получаем доступные тесты, исключая выполненные
         $tests = $group->tests()
             ->wherePivot('available_from', '<=', $currentTimestamp)
             ->wherePivot('available_until', '>=', $currentTimestamp)
+            ->whereNotIn('tests.id', $completedTestIds)
             ->get();
 
         return view('tests.inwork', compact('tests'));
-
     }
 
     public function completed()
@@ -49,8 +56,12 @@ class TestController extends Controller
 
         $currentTimestamp = Carbon::now();
 
+        if ($this->hasUserCompletedTest($id)) {
+            abort(403, 'Вы уже выполняли этот тест.');
+        }
+
         $test = $group->tests()
-            ->with('gradingCriteria')
+            ->select('tests.id', 'tests.title')
             ->where('tests.id', $id)
             ->wherePivot('available_from', '<=', $currentTimestamp)
             ->wherePivot('available_until', '>=', $currentTimestamp)
@@ -64,12 +75,21 @@ class TestController extends Controller
         return view('tests.show', compact('test'));
     }
 
+    public function testing()
+    {
+        return view('tests.testing');
+    }
+
     public function getTest($id)
     {
         $user = Auth::user();
         $group = $user->group;
         $currentTimestamp = Carbon::now();
 
+
+        if ($this->hasUserCompletedTest($id)) {
+            abort(403, 'Вы уже выполняли этот тест.');
+        }
 
         $test = $group->tests()
             ->with([
@@ -94,7 +114,19 @@ class TestController extends Controller
             ], 404);
         }
 
+//        TestResult::create([
+//            'student_id' => $user->id,
+//            'test_id' => $id,
+//        ]);
+
         return response()->json($test);
+    }
+
+    private function hasUserCompletedTest($testId)
+    {
+        return TestResult::where('student_id', Auth::id())
+            ->where('test_id', $testId)
+            ->exists();
     }
 
 }

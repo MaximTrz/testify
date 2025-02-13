@@ -1,6 +1,6 @@
 @import "../sass/variables";
 
-.description{
+.test{
     &__title{
         font-family: $font-family-sans-serif;
         font-size: 32px;
@@ -50,7 +50,7 @@
     &__criteria-list{
         list-style: none;
         padding: 0;
-        margin: 0;        
+        margin: 0;
     }
 
     &__criteria-item{
