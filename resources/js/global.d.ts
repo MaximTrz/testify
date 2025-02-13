@@ -1,7 +1,7 @@
-export {}; // Убедитесь, что файл является модулем
+export {};
 
 declare global {
-  interface Window {
-    authToken: string; // Добавляем свойство authToken в тип Window
-  }
+    interface Window {
+        authToken: string;
+    }
 }

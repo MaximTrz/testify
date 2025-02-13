@@ -26,15 +26,18 @@ if (rootElement) {
         );
 
         const path = window.location.pathname;
-        let testId = path.split("/tests/")[1];
-        testId = testId?.split("/")[0];
+        const testId = path.split("/tests/")[1]?.split("/")[0];
 
         useEffect(() => {
             dispatch(fetchTest(Number(testId)));
         }, [dispatch, testId]);
 
-        if (testLoaded !== ERequestStatus.SUCCEEDED) {
+        if (testLoaded == ERequestStatus.LOADING) {
             return <div>Загрузка теста...</div>;
+        }
+
+        if (testLoaded == ERequestStatus.FAILED) {
+            return <div>Ошибка загрузки теста</div>;
         }
 
         return <Router />;

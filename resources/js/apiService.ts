@@ -23,7 +23,7 @@ export default class ApiService {
             const response = await axios.get(`${this.baseUrl}${url}`);
             return response.data;
         } catch (error) {
-            throw new Error("Failed to fetch price data");
+            throw new Error(error.response.data.message);
         }
     }
 

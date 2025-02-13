@@ -14,6 +14,7 @@ export type TState = {
     currentQuestion: number;
     started: boolean;
     testLoaded: ERequestStatus;
+    errorText: string | undefined;
 };
 
 const initialState: TState = {
@@ -23,6 +24,7 @@ const initialState: TState = {
     currentQuestion: 0,
     started: false,
     testLoaded: ERequestStatus.IDLE,
+    errorText: "",
 };
 
 const testSlice = createSlice({
@@ -65,7 +67,10 @@ const testSlice = createSlice({
                 payload.questions = shuffleArray(payload.questions);
                 state.test = payload;
             })
-            .addCase(fetchTest.rejected, () => {});
+            .addCase(fetchTest.rejected, (state, { payload }) => {
+                state.errorText = payload;
+                state.testLoaded = ERequestStatus.FAILED;
+            });
     },
 });
 
