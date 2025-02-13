@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
 import ReactDOM from "react-dom/client";
 import { Provider, useDispatch, useSelector } from "react-redux";
 
