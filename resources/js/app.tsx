@@ -19,8 +19,12 @@ const App: React.FC = () => {
         }
     }, [dispatch, testId]);
 
-    if (testLoaded !== ERequestStatus.SUCCEEDED) {
+    if (testLoaded == ERequestStatus.LOADING) {
         return <div>Загрузка теста...</div>;
+    }
+
+    if (testLoaded == ERequestStatus.FAILED) {
+        return <div>Ошибка загрузки теста</div>;
     }
 
     return <Question />;
