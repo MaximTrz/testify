@@ -1,5 +1,4 @@
-// App.tsx
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "./store";
@@ -13,8 +12,6 @@ const App: React.FC = () => {
     const testLoaded = useSelector(
         (state: RootState) => state.testSlice.testLoaded,
     );
-
-    console.log(testId);
 
     useEffect(() => {
         if (testId) {

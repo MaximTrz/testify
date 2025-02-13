@@ -87,9 +87,9 @@ class TestController extends Controller
         $currentTimestamp = Carbon::now();
 
 
-//        if ($this->hasUserCompletedTest($id)) {
-//            abort(403, 'Вы уже выполняли этот тест.');
-//        }
+        if ($this->hasUserCompletedTest($id)) {
+            abort(403, 'Вы уже выполняли этот тест.');
+        }
 
         $test = $group->tests()
             ->with([
