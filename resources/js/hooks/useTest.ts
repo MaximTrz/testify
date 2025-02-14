@@ -25,8 +25,8 @@ const useTest = () => {
     };
 
     const sendStudendAnswer = (payload: TSendAnswerPayload) => {
-        const tets = dispatch(sendAnswer(payload));
-        console.log(tets);
+        const result = dispatch(sendAnswer(payload));
+        return result;
     };
 
     const getTestStarted = useSelector(

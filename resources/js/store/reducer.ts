@@ -84,6 +84,14 @@ const testSlice = createSlice({
                 } else {
                     state.incorrect += 1;
                 }
+                if (state.test) {
+                    if (
+                        state.currentQuestion <
+                        state.test.questions.length - 1
+                    ) {
+                        state.currentQuestion += 1;
+                    }
+                }
                 state.requestStatus = ERequestStatus.SUCCEEDED;
             })
             .addCase(sendAnswer.rejected, (state, { payload }) => {

@@ -31,6 +31,14 @@ const Question: React.FC = () => {
         setTimeLeft(question?.time_limit);
     }, [question]);
 
+    const sendAnwser = (payload) => {
+        sendStudendAnswer({
+            test_id: payload.test_id,
+            question_id: payload.question_id,
+            answer_id: payload.answer_id,
+        });
+    };
+
     useEffect(() => {
         if (!question || timeLeft <= 0) return;
 
@@ -68,13 +76,13 @@ const Question: React.FC = () => {
                     <li
                         key={`${answer.id}-${index}`}
                         className="question__answer-item"
-                        onClick={() =>
-                            sendStudendAnswer({
+                        onClick={() => {
+                            sendAnwser({
                                 test_id: testItem.id,
                                 question_id: question.id,
                                 answer_id: answer.id,
-                            })
-                        }
+                            });
+                        }}
                     >
                         <div className="question__answer-label">
                             {String.fromCharCode(65 + index)}
