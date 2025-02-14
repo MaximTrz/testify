@@ -14,6 +14,7 @@ export type TState = {
     currentQuestion: number;
     started: boolean;
     testLoaded: ERequestStatus;
+    requestStatus: ERequestStatus;
     errorText: string | undefined;
 };
 
@@ -24,6 +25,7 @@ const initialState: TState = {
     currentQuestion: 0,
     started: false,
     testLoaded: ERequestStatus.IDLE,
+    requestStatus: ERequestStatus.IDLE,
     errorText: "",
 };
 
@@ -73,16 +75,20 @@ const testSlice = createSlice({
             })
 
             .addCase(sendAnswer.pending, (state) => {
-                state.testLoaded = ERequestStatus.LOADING;
+                state.requestStatus = ERequestStatus.LOADING;
             })
             .addCase(sendAnswer.fulfilled, (state, { payload }) => {
-                state.testLoaded = ERequestStatus.SUCCEEDED;
-                payload.questions = shuffleArray(payload.questions);
-                state.test = payload;
+                console.log(payload);
+                if (payload.result.is_correct == 1) {
+                    state.correct += 1;
+                } else {
+                    state.incorrect += 1;
+                }
+                state.requestStatus = ERequestStatus.SUCCEEDED;
             })
             .addCase(sendAnswer.rejected, (state, { payload }) => {
                 state.errorText = payload;
-                state.testLoaded = ERequestStatus.FAILED;
+                state.requestStatus = ERequestStatus.FAILED;
             });
     },
 });
@@ -100,16 +106,36 @@ export const fetchTest = createAsyncThunk<
     }
 });
 
+type TSendAnswerResponse = {
+    message: string;
+    result: {
+        student_id: number;
+        question_id: number;
+        answer_id: number;
+        is_correct: number;
+        updated_at: string;
+        created_at: string;
+        id: number;
+    };
+};
+
+export interface TSendAnswerPayload {
+    test_id: number;
+    question_id: number;
+    answer_id: number;
+}
+
 export const sendAnswer = createAsyncThunk<
-    ITest,
-    number,
+    TSendAnswerResponse,
+    TSendAnswerPayload,
     { rejectValue: string }
 >("test/sendAnswer", async (payload, thunkAPI) => {
     try {
-        const serverTestData: ITest = await apiService.postAnswer(payload);
-        return serverTestData;
+        const response: TSendAnswerResponse =
+            await apiService.postAnswer(payload);
+        return response;
     } catch (error) {
-        return thunkAPI.rejectWithValue(error.message);
+        return thunkAPI.rejectWithValue(error.message || "Ошибка запроса");
     }
 });
 

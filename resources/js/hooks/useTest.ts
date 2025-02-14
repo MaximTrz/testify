@@ -2,9 +2,13 @@ import { useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import { nextQuestion, setStarted } from "../store/reducer";
+import { sendAnswer } from "../store/reducer";
+import { AppDispatch } from "../store";
+
+import { TSendAnswerPayload } from "../store/reducer";
 
 const useTest = () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const testItem = useSelector((state: RootState) => state.testSlice.test);
     const currentQuestion = useSelector(
         (state: RootState) => state.testSlice.currentQuestion,
@@ -20,6 +24,11 @@ const useTest = () => {
         dispatch(setStarted(true));
     };
 
+    const sendStudendAnswer = (payload: TSendAnswerPayload) => {
+        const tets = dispatch(sendAnswer(payload));
+        console.log(tets);
+    };
+
     const getTestStarted = useSelector(
         (state: RootState) => state.testSlice.started,
     );
@@ -32,6 +41,7 @@ const useTest = () => {
             setStarted,
             startTest,
             getTestStarted,
+            sendStudendAnswer,
         }),
         [testItem, currentQuestion],
     );

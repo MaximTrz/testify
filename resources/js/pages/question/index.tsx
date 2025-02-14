@@ -6,7 +6,13 @@ import timeFormatting from "../../utils/timeFormatting";
 import "./style.scss";
 
 const Question: React.FC = () => {
-    const { testItem, currentQuestion, setNextQuestion, startTest } = useTest();
+    const {
+        testItem,
+        currentQuestion,
+        setNextQuestion,
+        startTest,
+        sendStudendAnswer,
+    } = useTest();
 
     useEffect(() => {
         startTest();
@@ -60,9 +66,15 @@ const Question: React.FC = () => {
             <ul className="question__answer-list">
                 {answers.map((answer, index) => (
                     <li
-                        key={`${question?.id}-${index}`}
+                        key={`${answer.id}-${index}`}
                         className="question__answer-item"
-                        onClick={setNextQuestion}
+                        onClick={() =>
+                            sendStudendAnswer({
+                                test_id: testItem.id,
+                                question_id: question.id,
+                                answer_id: answer.id,
+                            })
+                        }
                     >
                         <div className="question__answer-label">
                             {String.fromCharCode(65 + index)}
