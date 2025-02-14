@@ -78,7 +78,6 @@ const testSlice = createSlice({
                 state.requestStatus = ERequestStatus.LOADING;
             })
             .addCase(sendAnswer.fulfilled, (state, { payload }) => {
-                console.log(payload);
                 if (payload.result.is_correct == 1) {
                     state.correct += 1;
                 } else {

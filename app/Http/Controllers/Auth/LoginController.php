@@ -50,7 +50,7 @@ class LoginController extends Controller
         $user = $this->guard()->user();
 
         // Получаем текущего пользователя
-        
+
         // Удаляем токен из сессии
         if ($request->hasSession() && $sessionToken = $request->session()->get('authToken')) {
 

@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
-
+import Loader from "../../components/loader";
 import useTest from "../../hooks/useTest";
 import shuffleArray from "../../utils/shuffleArray";
 import timeFormatting from "../../utils/timeFormatting";
 import "./style.scss";
+import { ERequestStatus } from "../../types/ERequestStatus";
 
 const Question: React.FC = () => {
     const {
@@ -12,7 +13,11 @@ const Question: React.FC = () => {
         setNextQuestion,
         startTest,
         sendStudendAnswer,
+        requestStatus,
     } = useTest();
+
+    const [isAnswered, setIsAnswered] = useState(false);
+    const [timeLeft, setTimeLeft] = useState(60);
 
     useEffect(() => {
         startTest();
@@ -24,11 +29,9 @@ const Question: React.FC = () => {
 
     const question = testItem?.questions?.[currentQuestion];
 
-    // Храним оставшееся время
-    const [timeLeft, setTimeLeft] = useState(question?.time_limit ?? 60);
-
     useEffect(() => {
-        setTimeLeft(question?.time_limit);
+        setTimeLeft(question?.time_limit ?? 60);
+        setIsAnswered(false);
     }, [question]);
 
     const sendAnwser = (payload) => {
@@ -37,6 +40,7 @@ const Question: React.FC = () => {
             question_id: payload.question_id,
             answer_id: payload.answer_id,
         });
+        setIsAnswered(true);
     };
 
     useEffect(() => {
@@ -57,6 +61,10 @@ const Question: React.FC = () => {
 
     const answers = useMemo(() => shuffleArray(question.answers), [question]);
 
+    if (requestStatus === ERequestStatus.LOADING || isAnswered) {
+        return <Loader />;
+    }
+
     return (
         <div className="question">
             <div className="question__test-description">
@@ -75,8 +83,9 @@ const Question: React.FC = () => {
                 {answers.map((answer, index) => (
                     <li
                         key={`${answer.id}-${index}`}
-                        className="question__answer-item"
+                        className={`question__answer-item ${isAnswered ? "question__answer-item--disabled" : ""}`}
                         onClick={() => {
+                            if (isAnswered) return;
                             sendAnwser({
                                 test_id: testItem.id,
                                 question_id: question.id,

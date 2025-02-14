@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('student_answers', function (Blueprint $table) {
             $table->id(); // автоинкрементное поле id
-            $table->foreignId('test_result_id')->constrained('test_results')->onDelete('cascade'); // связь с таблицей test_results
+            $table->foreignId('test_id')->constrained('tests')->onDelete('cascade'); // связь с таблицей test_results
             $table->foreignId('question_id')->constrained('questions')->onDelete('cascade'); // связь с таблицей questions
             $table->foreignId('answer_id')->nullable()->constrained('answers')->onDelete('set null'); // связь с таблицей answers, может быть NULL
             $table->text('given_answer_text')->nullable(); // текст ответа для открытых вопросов

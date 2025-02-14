@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import { nextQuestion, setStarted } from "../store/reducer";
@@ -12,6 +13,10 @@ const useTest = () => {
     const testItem = useSelector((state: RootState) => state.testSlice.test);
     const currentQuestion = useSelector(
         (state: RootState) => state.testSlice.currentQuestion,
+    );
+
+    const requestStatus = useSelector(
+        (state: RootState) => state.testSlice.requestStatus,
     );
 
     const setNextQuestion = () => {
@@ -42,6 +47,7 @@ const useTest = () => {
             startTest,
             getTestStarted,
             sendStudendAnswer,
+            requestStatus,
         }),
         [testItem, currentQuestion],
     );
