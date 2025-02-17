@@ -19,8 +19,14 @@ const useTest = () => {
         (state: RootState) => state.testSlice.requestStatus,
     );
 
+    const correct = useSelector((state: RootState) => state.testSlice.correct);
+
+    const gradingCriteria = useSelector(
+        (state: RootState) => state.testSlice.test?.grading_criteria,
+    );
+
     const setNextQuestion = () => {
-        if (testItem && currentQuestion < testItem.questions.length - 1) {
+        if (testItem && currentQuestion < testItem.questions.length) {
             dispatch(nextQuestion());
         }
     };
@@ -48,6 +54,8 @@ const useTest = () => {
             getTestStarted,
             sendStudendAnswer,
             requestStatus,
+            gradingCriteria,
+            correct,
         }),
         [testItem, currentQuestion],
     );

@@ -44,7 +44,7 @@ const testSlice = createSlice({
         },
         nextQuestion: (state) => {
             if (state.test) {
-                if (state.currentQuestion < state.test?.questions.length) {
+                if (state.currentQuestion <= state.test?.questions.length) {
                     state.currentQuestion = state.currentQuestion + 1;
                 }
             }
@@ -84,10 +84,7 @@ const testSlice = createSlice({
                     state.incorrect += 1;
                 }
                 if (state.test) {
-                    if (
-                        state.currentQuestion <
-                        state.test.questions.length - 1
-                    ) {
+                    if (state.currentQuestion < state.test.questions.length) {
                         state.currentQuestion += 1;
                     }
                 }
