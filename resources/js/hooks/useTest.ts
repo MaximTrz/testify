@@ -10,7 +10,9 @@ import { TSendAnswerPayload } from "../store/reducer";
 
 const useTest = () => {
     const dispatch = useDispatch<AppDispatch>();
+
     const testItem = useSelector((state: RootState) => state.testSlice.test);
+
     const currentQuestion = useSelector(
         (state: RootState) => state.testSlice.currentQuestion,
     );
@@ -19,10 +21,22 @@ const useTest = () => {
         (state: RootState) => state.testSlice.requestStatus,
     );
 
+    const errorText = useSelector(
+        (state: RootState) => state.testSlice.errorText,
+    );
+
     const correct = useSelector((state: RootState) => state.testSlice.correct);
 
     const gradingCriteria = useSelector(
         (state: RootState) => state.testSlice.test?.grading_criteria,
+    );
+
+    const questions = useSelector(
+        (state: RootState) => state.testSlice.test?.questions,
+    );
+
+    const testLoaded = useSelector(
+        (state: RootState) => state.testSlice.testLoaded,
     );
 
     const setNextQuestion = () => {
@@ -56,8 +70,11 @@ const useTest = () => {
             requestStatus,
             gradingCriteria,
             correct,
+            questions,
+            testLoaded,
+            errorText,
         }),
-        [testItem, currentQuestion],
+        [testItem, currentQuestion, requestStatus, testLoaded],
     );
 };
 

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import Loader from "../../components/loader";
 import useTest from "../../hooks/useTest";
 import shuffleArray from "../../utils/shuffleArray";
@@ -15,6 +15,7 @@ const Question: React.FC = () => {
         startTest,
         sendStudendAnswer,
         requestStatus,
+        errorText,
     } = useTest();
 
     const [isAnswered, setIsAnswered] = useState(false);
@@ -24,10 +25,6 @@ const Question: React.FC = () => {
         startTest();
     }, [startTest]);
 
-    if (!testItem) {
-        return <div>Тест не загружен</div>;
-    }
-
     const question = testItem?.questions?.[currentQuestion];
 
     useEffect(() => {
@@ -35,35 +32,55 @@ const Question: React.FC = () => {
         setIsAnswered(false);
     }, [question]);
 
-    const sendAnwser = (payload) => {
-        sendStudendAnswer({
-            test_id: payload.test_id,
-            question_id: payload.question_id,
-            answer_id: payload.answer_id,
-        });
-        setIsAnswered(true);
-    };
+    const sendAnwser = useCallback(
+        (payload) => {
+            sendStudendAnswer({
+                test_id: payload.test_id,
+                question_id: payload.question_id,
+                answer_id: payload.answer_id,
+            });
+            setIsAnswered(true);
+        },
+        [sendStudendAnswer],
+    );
 
     useEffect(() => {
-        if (!question || timeLeft <= 0) return;
+        if (
+            !question ||
+            timeLeft <= 0 ||
+            requestStatus === ERequestStatus.FAILED
+        ) {
+            return;
+        }
 
         const interval = setInterval(() => {
             setTimeLeft((prevTime) => prevTime - 1);
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [timeLeft, question]);
+    }, [timeLeft, question, requestStatus]);
 
     useEffect(() => {
         if (timeLeft === 0) {
             setNextQuestion();
         }
-    }, [timeLeft]);
+    }, [timeLeft, setNextQuestion]);
 
-    const answers = useMemo(() => shuffleArray(question.answers), [question]);
+    const answers = useMemo(() => {
+        if (!question) return [];
+        return shuffleArray(question.answers);
+    }, [question]);
+
+    if (requestStatus == ERequestStatus.FAILED) {
+        return <div> {errorText} </div>;
+    }
 
     if (requestStatus === ERequestStatus.LOADING || isAnswered) {
         return <Loader />;
+    }
+
+    if (!testItem || !question) {
+        return <div>Тест не загружен</div>;
     }
 
     return (
@@ -79,7 +96,7 @@ const Question: React.FC = () => {
                     {timeFormatting(timeLeft)}
                 </div>
             </div>
-            <div className="question__text">{question?.question_text}</div>
+            <div className="question__text">{question.question_text}</div>
             <ul className="question__answer-list">
                 {answers.map((answer, index) => (
                     <li
@@ -104,7 +121,7 @@ const Question: React.FC = () => {
                 ))}
             </ul>
             <div className="question__current-step">
-                {currentQuestion + 1} из {testItem?.questions.length}
+                {currentQuestion + 1} из {testItem.questions.length}
             </div>
             <div className="question__skip-wrapper">
                 <button className="question__skip" onClick={setNextQuestion}>

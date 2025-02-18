@@ -15,7 +15,7 @@ export type TState = {
     started: boolean;
     testLoaded: ERequestStatus;
     requestStatus: ERequestStatus;
-    errorText: string | undefined;
+    errorText: string;
 };
 
 const initialState: TState = {
@@ -70,7 +70,7 @@ const testSlice = createSlice({
                 state.test = payload;
             })
             .addCase(fetchTest.rejected, (state, { payload }) => {
-                state.errorText = payload;
+                state.errorText = payload || "Ошибка выполнения запроса";
                 state.testLoaded = ERequestStatus.FAILED;
             })
 
@@ -91,7 +91,7 @@ const testSlice = createSlice({
                 state.requestStatus = ERequestStatus.SUCCEEDED;
             })
             .addCase(sendAnswer.rejected, (state, { payload }) => {
-                state.errorText = payload;
+                state.errorText = payload || "Ошибка выполнения запроса";
                 state.requestStatus = ERequestStatus.FAILED;
             });
     },
@@ -139,7 +139,9 @@ export const sendAnswer = createAsyncThunk<
             await apiService.postAnswer(payload);
         return response;
     } catch (error) {
-        return thunkAPI.rejectWithValue(error.message || "Ошибка запроса");
+        return thunkAPI.rejectWithValue(
+            error.message || "Ошибка при выпполнении запроса",
+        );
     }
 });
 

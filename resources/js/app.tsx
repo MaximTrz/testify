@@ -1,25 +1,18 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "./store";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "./store";
 import { fetchTest } from "./store/reducer";
 import { ERequestStatus } from "./types/ERequestStatus";
 import Question from "./pages/question";
+import useTest from "./hooks/useTest";
 import Grade from "./pages/grade";
 
 const App: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const { testId } = useParams<{ testId: string }>();
-    const testLoaded = useSelector(
-        (state: RootState) => state.testSlice.testLoaded,
-    );
-    const questions = useSelector(
-        (state: RootState) => state.testSlice.test?.questions,
-    );
 
-    const curentQuestion = useSelector(
-        (state: RootState) => state.testSlice.currentQuestion,
-    );
+    const { testLoaded, questions, currentQuestion } = useTest();
 
     useEffect(() => {
         if (testId) {
@@ -35,8 +28,10 @@ const App: React.FC = () => {
         return <div>Ошибка загрузки теста</div>;
     }
 
-    if (curentQuestion == (questions?.length ?? 0)) {
-        return <Grade />;
+    if (questions?.length ?? 0) {
+        if (currentQuestion == (questions?.length ?? 0)) {
+            return <Grade />;
+        }
     }
 
     return <Question />;
