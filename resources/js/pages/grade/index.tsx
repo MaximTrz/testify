@@ -1,12 +1,14 @@
 import * as React from "react";
 import { useMemo } from "react";
 
+import timeFormatting from "../../utils/timeFormatting";
+
 import useTest from "../../hooks/useTest";
 
 import "./style.scss";
 
 const Grade: React.FC = () => {
-    const { gradingCriteria, correct, testItem } = useTest();
+    const { gradingCriteria, correct, testItem, allTIme } = useTest();
 
     const studentGrade = useMemo(() => {
         let studentGrade = 2;
@@ -56,7 +58,7 @@ const Grade: React.FC = () => {
                 </div>
 
                 <div className="grade__lead-time">
-                    Время выполнения теста: 00 минут
+                    Время выполнения теста: {timeFormatting(allTIme)}
                 </div>
 
                 {studentGrade !== 0 ? (

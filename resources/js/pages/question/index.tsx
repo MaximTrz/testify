@@ -12,18 +12,15 @@ const Question: React.FC = () => {
         testItem,
         currentQuestion,
         setNextQuestion,
-        startTest,
         sendStudendAnswer,
+        sendTestResult,
         requestStatus,
         errorText,
+        nextTick,
     } = useTest();
 
     const [isAnswered, setIsAnswered] = useState(false);
     const [timeLeft, setTimeLeft] = useState(60);
-
-    useEffect(() => {
-        startTest();
-    }, [startTest]);
 
     const question = testItem?.questions?.[currentQuestion];
 
@@ -38,11 +35,23 @@ const Question: React.FC = () => {
                 test_id: payload.test_id,
                 question_id: payload.question_id,
                 answer_id: payload.answer_id,
+                last_answer:
+                    currentQuestion === (testItem?.questions?.length ?? 0) - 1,
             });
             setIsAnswered(true);
         },
         [sendStudendAnswer],
     );
+
+    const skipAnswer = useCallback(() => {
+        if (testItem) {
+            if (currentQuestion === testItem?.questions?.length - 1) {
+                sendTestResult({ test_id: testItem.id });
+            } else {
+                setNextQuestion();
+            }
+        }
+    }, [testItem, currentQuestion]);
 
     useEffect(() => {
         if (
@@ -55,10 +64,11 @@ const Question: React.FC = () => {
 
         const interval = setInterval(() => {
             setTimeLeft((prevTime) => prevTime - 1);
+            nextTick();
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [timeLeft, question, requestStatus]);
+    }, [timeLeft, question, requestStatus, currentQuestion]);
 
     useEffect(() => {
         if (timeLeft === 0) {
@@ -124,7 +134,7 @@ const Question: React.FC = () => {
                 {currentQuestion + 1} из {testItem.questions.length}
             </div>
             <div className="question__skip-wrapper">
-                <button className="question__skip" onClick={setNextQuestion}>
+                <button className="question__skip" onClick={skipAnswer}>
                     Пропустить вопрос
                 </button>
             </div>

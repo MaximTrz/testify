@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\StudentAnswer;
 use App\Models\TestResult;
 use Illuminate\Http\Request;
 
@@ -28,8 +29,7 @@ class TestResultController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request)    {
 
             $validated = $request->validate([
                 'test_id' => 'required|exists:tests,id',
@@ -84,9 +84,46 @@ class TestResultController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TestResult $testResult)
+    public function update(Request $request)
     {
-        //
+
+        $validated = $request->validate([
+            'test_id' => 'required|exists:tests,id',
+        ]);
+
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'Пользователь не авторизован.'
+            ], 401);
+        }
+
+        $correctAnswersCount = StudentAnswer::where('student_id', $user->id)
+            ->where('test_id', $validated['test_id'])
+            ->where('is_correct', 1)
+            ->count();
+
+        $testResult = TestResult::where('test_id', $validated['test_id'])
+            ->where('student_id', $user->id)
+            ->first();
+
+        // Check if the test result exists
+        if (!$testResult) {
+            return response()->json([
+                'message' => 'Результат теста не найден.'
+            ], 404);
+        }
+
+        // Update the test result
+        $testResult->update([
+              'score' => $correctAnswersCount,
+        ]);
+
+        return response()->json([
+            'message' => 'Результат успешно обновлён.',
+            'test_result' => $testResult
+        ], 200);
     }
 
     /**

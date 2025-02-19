@@ -7,6 +7,7 @@ import { ERequestStatus } from "./types/ERequestStatus";
 import Question from "./pages/question";
 import useTest from "./hooks/useTest";
 import Grade from "./pages/grade";
+import Loader from "./components/loader";
 
 const App: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -21,7 +22,7 @@ const App: React.FC = () => {
     }, [dispatch, testId]);
 
     if (testLoaded == ERequestStatus.LOADING) {
-        return <div>Загрузка теста...</div>;
+        return <Loader />;
     }
 
     if (testLoaded == ERequestStatus.FAILED) {

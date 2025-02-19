@@ -87,9 +87,9 @@ class TestController extends Controller
         $currentTimestamp = Carbon::now();
 
 
-//        if ($this->hasUserCompletedTest($id)) {
-//            abort(403, 'Вы уже выполняли этот тест.');
-//        }
+        if ($this->hasUserCompletedTest($id)) {
+            abort(403, 'Вы уже выполняли этот тест.');
+        }
 
         $test = $group->tests()
             ->with([
@@ -101,7 +101,7 @@ class TestController extends Controller
             ->where('tests.id', $id)
             ->wherePivot('available_from', '<=', $currentTimestamp)
             ->wherePivot('available_until', '>=', $currentTimestamp)
-            // ->withCount('questions') // Uncomment if needed
+            // ->withCount('questions') //
             ->first();
 
         $test->pivot->available_from = Carbon::parse($test->pivot->available_from)->translatedFormat('d.m.Y H:i');
@@ -114,10 +114,10 @@ class TestController extends Controller
             ], 404);
         }
 
-//        TestResult::create([
-//            'student_id' => $user->id,
-//            'test_id' => $id,
-//        ]);
+        TestResult::create([
+            'student_id' => $user->id,
+            'test_id' => $id,
+        ]);
 
         return response()->json($test);
     }
