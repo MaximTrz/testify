@@ -6,6 +6,8 @@ namespace App\MoonShine\Resources;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\TestResult;
+use App\Models\Group;
+use App\Models\Test;
 
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\Resources\ModelResource;
@@ -14,6 +16,8 @@ use MoonShine\UI\Fields\ID;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\UI\Fields\Number;
+
+
 
 /**
  * @extends ModelResource<TestResult>
@@ -59,6 +63,14 @@ class TestResultResource extends ModelResource
     {
         return [
             ID::make(),
+        ];
+    }
+
+    protected function filters(): iterable
+    {
+        return [
+            BelongsTo::make('Тест', 'test', resource: TestResource::class, formatted: 'title' ),
+            //BelongsTo::make('Группа', 'user.group', resource: GroupResource::class, formatted: 'name')
         ];
     }
 

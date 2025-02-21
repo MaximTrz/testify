@@ -49,4 +49,6 @@ class User extends Authenticatable
         return $this->belongsTo(Group::class); // Связь "многие к одному" с группой
     }
 
+
+
 }
