@@ -33,8 +33,8 @@ class TestGroupResource extends ModelResource
             //ID::make()->sortable(),
             BelongsTo::make('Группа', 'group', resource: GroupResource::class, formatted: 'name'),
             BelongsTo::make('Тест', 'test', resource: TestResource::class, formatted: 'title'),
-            Date::make('Доступен с', 'available_from')->withTime(),
-            Date::make('Доступен по', 'available_until')->withTime()
+            Date::make('Доступен с', 'available_from')->withTime()->format('d-m-Y H:i'),
+            Date::make('Доступен по', 'available_until')->withTime()->format('d-m-Y H:i'),
         ];
     }
 

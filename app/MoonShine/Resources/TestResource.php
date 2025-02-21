@@ -7,7 +7,7 @@ namespace App\MoonShine\Resources;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Test;
 
-use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
+
 use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\Layout\Box;
@@ -15,6 +15,10 @@ use MoonShine\UI\Fields\ID;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\UI\Fields\Text;
+
+use Illuminate\Contracts\Database\Eloquent\Builder;
+
+
 
 /**
  * @extends ModelResource<Test>
@@ -50,6 +54,27 @@ class TestResource extends ModelResource
             ])
         ];
     }
+
+    public function beforeCreating(mixed $item): mixed
+    {
+        if ($item instanceof Test) {
+            $item->teacher_id = auth()->id();
+        }
+
+        return $item;
+    }
+
+    protected function modifyQueryBuilder(Builder $builder): Builder
+    {
+
+        if (auth()->user()->moonshine_user_role_id === 1) {
+            return $builder;
+        }
+
+        return $builder->where('teacher_id', auth()->id());
+    }
+
+
 
     /**
      * @return list<FieldContract>

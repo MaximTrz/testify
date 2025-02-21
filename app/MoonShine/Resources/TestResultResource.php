@@ -33,7 +33,7 @@ class TestResultResource extends ModelResource
             //ID::make()->sortable(),
             BelongsTo::make('Студент', 'user', resource: UserResource::class, formatted:  'name'),
             BelongsTo::make('Тест', 'test', resource: TestResource::class, formatted:  'title'),
-            Number::make('Оценка', 'score')
+            Number::make('Правильных ответов', 'score')
         ];
     }
 
@@ -47,7 +47,7 @@ class TestResultResource extends ModelResource
                 //ID::make(),
                 BelongsTo::make('Тест', 'test', resource: TestResource::class)->disabled(),
                 BelongsTo::make('Студент', 'user', resource: UserResource::class, formatted:  'name')->disabled(),
-                Number::make('Оценка', 'score')
+                Number::make('Правильных ответо', 'score')->disabled()
             ])
         ];
     }

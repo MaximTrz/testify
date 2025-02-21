@@ -12,8 +12,10 @@ use App\Models\Question;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 
 use MoonShine\Laravel\Fields\Relationships\HasMany;
+use MoonShine\Laravel\Fields\Relationships\RelationRepeater;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\Layout\Box;
+use MoonShine\UI\Fields\Checkbox;
 use MoonShine\UI\Fields\ID;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\ComponentContract;
@@ -50,7 +52,18 @@ class QuestionResource extends ModelResource
                 ID::make(),
                 Text::make('Текст вопроса', 'question_text'),
                 Number::make('Время', 'time_limit'),
-                HasMany::make('Варианты ответа', 'Answers', resource: AnswerResource::class)->creatable(),
+
+                //HasMany::make('Варианты ответа', 'Answers', resource: AnswerResource::class)->creatable(),
+
+                RelationRepeater::make(
+                    'Варианты ответа',
+                    'Answers',
+                    resource: AnswerResource::class
+                )->fields([
+                    Text::make('Текст ответа', 'answer_text'),
+                    Checkbox::make('Верный', 'is_correct'),
+                ]),
+
                 BelongsTo::make('Тест', 'test', resource: TestResource::class)
             ])
         ];

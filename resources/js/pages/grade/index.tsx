@@ -12,20 +12,31 @@ const Grade: React.FC = () => {
 
     const studentGrade = useMemo(() => {
         let studentGrade = 2;
-        if (gradingCriteria?.length !== 0) {
-            if (Array.isArray(gradingCriteria)) {
-                gradingCriteria.forEach((criteria) => {
-                    if (
-                        correct >= Number(criteria.min_correct_answers) &&
-                        correct <= Number(criteria.max_correct_answers)
-                    ) {
-                        studentGrade = criteria.grade;
-                    }
-                });
+
+        if (Array.isArray(gradingCriteria) && gradingCriteria.length > 0) {
+            const maxCorrect = Math.max(
+                ...gradingCriteria.map((criteria) =>
+                    Number(criteria.max_correct_answers),
+                ),
+            );
+
+            if (correct >= maxCorrect) {
+                return 5;
             }
+
+            gradingCriteria.forEach((criteria) => {
+                if (
+                    correct >= Number(criteria.min_correct_answers) &&
+                    correct <= Number(criteria.max_correct_answers)
+                ) {
+                    studentGrade = criteria.grade;
+                }
+            });
+
             return studentGrade;
-        } else return 0;
-        return studentGrade;
+        }
+
+        return 0;
     }, [gradingCriteria, correct]);
 
     const gradeExplanation = useMemo(() => {
