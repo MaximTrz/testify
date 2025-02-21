@@ -12,9 +12,10 @@ export type TState = {
     correct: number;
     incorrect: number;
     currentQuestion: number;
-    started: boolean;
     testLoaded: ERequestStatus;
-    errorText: string | undefined;
+    requestStatus: ERequestStatus;
+    errorText: string;
+    timeOfExecution: number;
 };
 
 const initialState: TState = {
@@ -22,9 +23,10 @@ const initialState: TState = {
     correct: 0,
     incorrect: 0,
     currentQuestion: 0,
-    started: false,
     testLoaded: ERequestStatus.IDLE,
+    requestStatus: ERequestStatus.IDLE,
     errorText: "",
+    timeOfExecution: 0,
 };
 
 const testSlice = createSlice({
@@ -42,19 +44,13 @@ const testSlice = createSlice({
         },
         nextQuestion: (state) => {
             if (state.test) {
-                if (state.currentQuestion < state.test?.questions.length) {
+                if (state.currentQuestion <= state.test?.questions.length) {
                     state.currentQuestion = state.currentQuestion + 1;
                 }
             }
         },
-        resetTest: (state) => {
-            state.currentQuestion = 0;
-            state.correct = 0;
-            state.incorrect = 0;
-            state.started = false;
-        },
-        setStarted: (state, { payload }: { payload: boolean }) => {
-            state.started = payload;
+        tickTime: (state) => {
+            state.timeOfExecution += 1;
         },
     },
     extraReducers: (builder) => {
@@ -68,8 +64,48 @@ const testSlice = createSlice({
                 state.test = payload;
             })
             .addCase(fetchTest.rejected, (state, { payload }) => {
-                state.errorText = payload;
+                state.errorText = payload || "Ошибка выполнения запроса";
                 state.testLoaded = ERequestStatus.FAILED;
+            })
+
+            .addCase(sendAnswer.pending, (state) => {
+                state.requestStatus = ERequestStatus.LOADING;
+            })
+            .addCase(sendAnswer.fulfilled, (state, { payload }) => {
+                if (payload.result.is_correct == 1) {
+                    state.correct += 1;
+                } else {
+                    state.incorrect += 1;
+                }
+                if (state.test) {
+                    if (state.currentQuestion < state.test.questions.length) {
+                        state.currentQuestion += 1;
+                    }
+                }
+                state.requestStatus = ERequestStatus.SUCCEEDED;
+            })
+            .addCase(sendAnswer.rejected, (state, { payload }) => {
+                state.errorText = payload || "Ошибка выполнения запроса";
+                state.requestStatus = ERequestStatus.FAILED;
+            })
+
+            .addCase(sendResult.pending, (state) => {
+                state.requestStatus = ERequestStatus.LOADING;
+            })
+            .addCase(sendResult.fulfilled, (state) => {
+                if (state.test) {
+                    if (
+                        state.currentQuestion ===
+                        state.test.questions.length - 1
+                    ) {
+                        state.currentQuestion = state.currentQuestion + 1;
+                    }
+                }
+                state.requestStatus = ERequestStatus.SUCCEEDED;
+            })
+            .addCase(sendResult.rejected, (state, { payload }) => {
+                state.errorText = payload || "Ошибка выполнения запроса";
+                state.requestStatus = ERequestStatus.FAILED;
             });
     },
 });
@@ -87,7 +123,73 @@ export const fetchTest = createAsyncThunk<
     }
 });
 
+type TSendAnswerResponse = {
+    message: string;
+    result: {
+        student_id: number;
+        question_id: number;
+        answer_id: number;
+        is_correct: number;
+        updated_at: string;
+        created_at: string;
+        id: number;
+    };
+};
+
+type TSendResultResponse = {
+    message: string;
+    result: {
+        id: number;
+        test_id: number;
+        student_id: number;
+        score: number;
+    };
+};
+
+export interface TSendAnswerPayload {
+    test_id: number;
+    question_id: number;
+    answer_id: number;
+    last_answer: boolean;
+}
+
+export interface TSendResultPayload {
+    test_id: number;
+}
+
+export const sendAnswer = createAsyncThunk<
+    TSendAnswerResponse,
+    TSendAnswerPayload,
+    { rejectValue: string }
+>("test/sendAnswer", async (payload, thunkAPI) => {
+    try {
+        const response: TSendAnswerResponse =
+            await apiService.postAnswer(payload);
+        return response;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(
+            error.message || "Ошибка при выпполнении запроса",
+        );
+    }
+});
+
+export const sendResult = createAsyncThunk<
+    TSendResultResponse,
+    TSendResultPayload,
+    { rejectValue: string }
+>("test/sendResult", async (payload, thunkAPI) => {
+    try {
+        const response: TSendResultResponse =
+            await apiService.putAnswer(payload);
+        return response;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(
+            error.message || "Ошибка при выпполнении запроса",
+        );
+    }
+});
+
 export default testSlice.reducer;
 
-export const { setTest, incCorrect, incIncorrect, nextQuestion, setStarted } =
+export const { setTest, incCorrect, incIncorrect, nextQuestion, tickTime } =
     testSlice.actions;

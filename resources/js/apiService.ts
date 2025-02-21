@@ -18,17 +18,40 @@ export default class ApiService {
         );
     }
 
-    async get(url) {
+    async request(method, url, data = null) {
         try {
-            const response = await axios.get(`${this.baseUrl}${url}`);
+            const response = await axios({
+                method,
+                url: `${this.baseUrl}${url}`,
+                data,
+            });
             return response.data;
         } catch (error) {
-            throw new Error(error.response.data.message);
+            throw new Error(error.response?.data?.message || error.message);
         }
     }
 
+    async get(url) {
+        return this.request("get", url);
+    }
+
+    async post(url, data) {
+        return this.request("post", url, data);
+    }
+
+    async put(url, data) {
+        return this.request("put", url, data);
+    }
+
     async getTest(id) {
-        const response = await this.get(`/api/tests/${id}`);
-        return response;
+        return this.get(`/api/tests/${id}`);
+    }
+
+    async postAnswer(data) {
+        return this.post("/api/student-anwser", data);
+    }
+
+    async putAnswer(data) {
+        return this.put("/api/test-results", data);
     }
 }

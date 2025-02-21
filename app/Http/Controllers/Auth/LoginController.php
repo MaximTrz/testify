@@ -49,6 +49,24 @@ class LoginController extends Controller
         // Получаем аутентифицированного пользователя
         $user = $this->guard()->user();
 
+        // Получаем текущего пользователя
+
+        // Удаляем токен из сессии
+        if ($request->hasSession() && $sessionToken = $request->session()->get('authToken')) {
+
+            [$id, $plainTextToken] = explode('|', $sessionToken, 2);
+
+            // Ищем токен по ID и проверяем, принадлежит ли он пользователю
+            $token = $user->tokens()->where('id', $id)->first();
+
+            if ($token) {
+                $token->delete();
+            } else {
+                // Токен не найден или не принадлежит пользователю
+                Log::warning('Token not found or does not belong to the user', ['token_id' => $id]);
+            }
+        }
+
         // Создаём токен Sanctum
         $token = $user->createToken('auth-token')->plainTextToken;
 

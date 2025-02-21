@@ -11,7 +11,7 @@
     <title>{{ config('app.name', 'Testify') }}</title>
 
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.tsx'])
+    @vite(['resources/sass/app.scss', 'resources/js/main.tsx'])
 </head>
 
 

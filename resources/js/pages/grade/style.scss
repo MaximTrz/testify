@@ -1,0 +1,76 @@
+@import "../../../sass/variables";
+
+.grade{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    &__title{
+        font-family: $font-family-sans-serif;
+        font-weight: 400;
+        font-size: 32px;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    &__details{  
+        flex: 1 1 auto;
+        padding: 40px;      
+        background-color: $base-color;
+        text-align: center;
+        border-radius: 30px;   
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;           
+    }
+    &__result-text{
+        font-family: $font-family-sans-serif;
+        font-weight: 400;
+        font-size: 32px;
+        text-transform: uppercase;
+    }
+    &__points{
+        font-family: $font-family-sans-serif;
+        font-weight: 400;
+        font-size: 32px;
+    }
+    &__lead-time{
+        font-family: $font-family-sans-serif;
+        font-weight: 400;
+        font-size: 25px;
+    }
+    &__text{
+        color: $base-title;
+    }
+    &__score{
+        font-family: $base-font;
+        font-weight: 400;
+        font-size: 64px;
+        font-family: "Poller One", serif;        
+    }
+    &__explanation{
+       font-family: $font-family-sans-serif; 
+       font-weight: 400;
+       font-size: 64px;
+    }
+    &__teachers-mark{
+        position: relative;
+        font-family: $font-family-sans-serif;
+        font-weight: 400;
+        font-size: 25px;
+        color: $base-title;                
+        &::before{
+            position: absolute;
+            content: "";
+            display: block;
+            width: 30px;
+            height: 30px;
+            top: 50%;
+            left: 10%;
+            transform: translateY(-50%);
+            background-image: url('../../../img/penсil.svg'); 
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+    }
+}

@@ -1,51 +1,41 @@
-import * as React from "react";
-import { useEffect } from "react";
-import ReactDOM from "react-dom/client";
-import { Provider, useDispatch, useSelector } from "react-redux";
-
-import Router from "./Router";
-import { store } from "./store";
-import { RootState } from "./store";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { AppDispatch } from "./store";
-
 import { fetchTest } from "./store/reducer";
 import { ERequestStatus } from "./types/ERequestStatus";
+import Question from "./pages/question";
+import useTest from "./hooks/useTest";
+import Grade from "./pages/grade";
+import Loader from "./components/loader";
 
-const rootElement = document.getElementById("test-app");
+const App: React.FC = () => {
+    const dispatch = useDispatch<AppDispatch>();
+    const { testId } = useParams<{ testId: string }>();
 
-let root;
+    const { testLoaded, questions, currentQuestion } = useTest();
 
-if (rootElement) {
-    root = ReactDOM.createRoot(rootElement);
-
-    const App = () => {
-        const dispatch = useDispatch<AppDispatch>();
-
-        const testLoaded = useSelector(
-            (state: RootState) => state.testSlice.testLoaded,
-        );
-
-        const path = window.location.pathname;
-        const testId = path.split("/tests/")[1]?.split("/")[0];
-
-        useEffect(() => {
+    useEffect(() => {
+        if (testId) {
             dispatch(fetchTest(Number(testId)));
-        }, [dispatch, testId]);
-
-        if (testLoaded == ERequestStatus.LOADING) {
-            return <div>Загрузка теста...</div>;
         }
+    }, [dispatch, testId]);
 
-        if (testLoaded == ERequestStatus.FAILED) {
-            return <div>Ошибка загрузки теста</div>;
+    if (testLoaded == ERequestStatus.LOADING) {
+        return <Loader />;
+    }
+
+    if (testLoaded == ERequestStatus.FAILED) {
+        return <div>Ошибка загрузки теста</div>;
+    }
+
+    if (questions?.length ?? 0) {
+        if (currentQuestion == (questions?.length ?? 0)) {
+            return <Grade />;
         }
+    }
 
-        return <Router />;
-    };
+    return <Question />;
+};
 
-    root.render(
-        <Provider store={store}>
-            <App />
-        </Provider>,
-    );
-}
+export default App;

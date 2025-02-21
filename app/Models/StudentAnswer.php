@@ -12,7 +12,7 @@ class StudentAnswer extends Model
     protected $table = 'student_answers';
 
     protected $fillable = [
-        'test_result_id',
+        'test_id',
         'question_id',
         'answer_id',
         'given_answer_text',
@@ -33,6 +33,11 @@ class StudentAnswer extends Model
     public function answer()
     {
         return $this->belongsTo(Answer::class);
+    }
+
+    public function test()
+    {
+        return $this->belongsTo(Test::class);
     }
 
     public function student()

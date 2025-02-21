@@ -1,7 +1,8 @@
 import * as React from "react";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Question from "./pages/question";
+
+import App from "./app";
 
 function Router() {
     return (
@@ -12,7 +13,7 @@ function Router() {
             }}
         >
             <Routes>
-                <Route path="/tests/:testId/questions" element={<Question />} />
+                <Route path="/tests/:testId/questions" element={<App />} />
             </Routes>
         </BrowserRouter>
     );
