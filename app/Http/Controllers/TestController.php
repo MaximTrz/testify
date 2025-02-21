@@ -117,6 +117,7 @@ class TestController extends Controller
         TestResult::create([
             'student_id' => $user->id,
             'test_id' => $id,
+            'group_id' => $group->id
         ]);
 
         return response()->json($test);

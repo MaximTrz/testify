@@ -17,7 +17,9 @@ use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\UI\Fields\Number;
 
+use App\MoonShine\Resources\UserResource;
 
+use MoonShine\Laravel\Fields\Relationships\HasOneThrough;
 
 /**
  * @extends ModelResource<TestResult>
@@ -69,8 +71,9 @@ class TestResultResource extends ModelResource
     protected function filters(): iterable
     {
         return [
-            BelongsTo::make('Тест', 'test', resource: TestResource::class, formatted: 'title' ),
-            //BelongsTo::make('Группа', 'user.group', resource: GroupResource::class, formatted: 'name')
+          BelongsTo::make('Тест', 'test', resource: TestResource::class, formatted: 'title')->nullable(),
+          BelongsTo::make('Студент', 'user', resource: UserResource::class, formatted: 'name')->nullable(),
+          BelongsTo::make('Группа', 'group', resource: GroupResource::class, formatted: 'name')->nullable(),
         ];
     }
 

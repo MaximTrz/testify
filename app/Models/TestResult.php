@@ -16,7 +16,10 @@ class TestResult extends Model
         'student_id',
         'score',
         'completed_at',
+        'group_id'
     ];
+
+    //public $timestamps = false; // Отключаем timestamps, если их нет
 
     public function test()
     {
@@ -28,6 +31,9 @@ class TestResult extends Model
         return $this->belongsTo(User::class, 'student_id');
     }
 
-
+    public function group()
+    {
+        return $this->belongsTo(Group::class, 'group_id');
+    }
 
 }

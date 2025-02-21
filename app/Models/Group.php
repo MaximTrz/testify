@@ -13,13 +13,9 @@ class Group extends Model
 
     public function students()
     {
-        return $this->hasMany(GroupStudent::class); // Связь "один ко многим" с таблицей GroupStudent
+        return $this->hasMany(GroupStudent::class);
     }
 
-//    public function tests()
-//    {
-//        return $this->belongsToMany(Test::class, 'test_group', 'group_id', 'test_id'); // Связь "многие ко многим" с тестами
-//    }
 
     public function tests()
     {
@@ -32,5 +28,8 @@ class Group extends Model
     {
         return $this->hasMany(User::class);
     }
+
+
+
 
 }

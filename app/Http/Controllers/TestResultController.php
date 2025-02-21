@@ -36,6 +36,7 @@ class TestResultController extends Controller
             ]);
 
             $user = Auth::user();
+            $group[id] = $user->group;
 
             if (!$user) {
                 return response()->json([
@@ -56,6 +57,7 @@ class TestResultController extends Controller
             $testResult = TestResult::create([
                 'student_id' => $user->id,
                 'test_id' => $validated['test_id'],
+                'group_id' => $group->id
             ]);
 
             return response()->json([
