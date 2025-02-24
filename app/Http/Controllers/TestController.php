@@ -66,12 +66,16 @@ class TestController extends Controller
             ->wherePivot('available_from', '<=', $currentTimestamp)
             ->wherePivot('available_until', '>=', $currentTimestamp)
             ->withCount('questions')
+            ->with(['gradingCriteria' => function ($query) {
+                $query->orderBy('min_correct_answers');
+            }])
             ->first();
 
+        
         if (!$test) {
             abort(404, 'Тест не найден или недоступен.');
         }
-
+        
         return view('tests.show', compact('test'));
     }
 
@@ -98,9 +102,13 @@ class TestController extends Controller
                     $query->select('id', 'question_id', 'answer_text');
                 }
             ])
+            ->with(['gradingCriteria' => function ($query) {
+                $query->orderBy('min_correct_answers');
+            }])
             ->where('tests.id', $id)
             ->wherePivot('available_from', '<=', $currentTimestamp)
             ->wherePivot('available_until', '>=', $currentTimestamp)
+
             // ->withCount('questions') //
             ->first();
 

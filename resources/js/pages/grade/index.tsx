@@ -14,8 +14,14 @@ const Grade: React.FC = () => {
         let studentGrade = 2;
 
         if (Array.isArray(gradingCriteria) && gradingCriteria.length > 0) {
+            const sortedGradingCriteria = [...gradingCriteria].sort(
+                (a, b) =>
+                    Number(a.min_correct_answers) -
+                    Number(b.min_correct_answers),
+            );
+
             const maxCorrect = Math.max(
-                ...gradingCriteria.map((criteria) =>
+                ...sortedGradingCriteria.map((criteria) =>
                     Number(criteria.max_correct_answers),
                 ),
             );
@@ -24,7 +30,7 @@ const Grade: React.FC = () => {
                 return 5;
             }
 
-            gradingCriteria.forEach((criteria) => {
+            sortedGradingCriteria.forEach((criteria) => {
                 if (
                     correct >= Number(criteria.min_correct_answers) &&
                     correct <= Number(criteria.max_correct_answers)
@@ -57,9 +63,7 @@ const Grade: React.FC = () => {
 
     return (
         <div className="grade">
-            <div className="grade__title">
-                Тест: Алгоритмы и способы их описания
-            </div>
+            <div className="grade__title">Тест: {testItem?.title}</div>
             <div className="grade__details">
                 <div className="grade__results">
                     <div className="grade__result-text">Ваш результат</div>
