@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Resources;
 
+use App\Models\Test;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\TestGroup;
 
@@ -74,4 +76,25 @@ class TestGroupResource extends ModelResource
     {
         return [];
     }
+
+    public function beforeCreating(mixed $item): mixed
+    {
+        if ($item instanceof TestGroup) {
+            $item->teacher_id = auth()->id();
+        }
+
+        return $item;
+    }
+
+    protected function modifyQueryBuilder(Builder $builder): Builder
+    {
+
+        if (auth()->user()->moonshine_user_role_id === 1) {
+            return $builder;
+        }
+
+        return $builder->where('teacher_id', auth()->id());
+    }
+
+
 }

@@ -2,14 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\GradingCriteria;
 use App\Models\StudentAnswer;
 use App\Models\TestResult;
 use Illuminate\Http\Request;
+
+use App\Services\TestResultService;
 
 use Illuminate\Support\Facades\Auth;
 
 class TestResultController extends Controller
 {
+
+
+    public function __construct(TestResultService $testResultService)
+    {
+        $this->testResultService = $testResultService;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -101,11 +111,6 @@ class TestResultController extends Controller
             ], 401);
         }
 
-        $correctAnswersCount = StudentAnswer::where('student_id', $user->id)
-            ->where('test_id', $validated['test_id'])
-            ->where('is_correct', 1)
-            ->count();
-
         $testResult = TestResult::where('test_id', $validated['test_id'])
             ->where('student_id', $user->id)
             ->first();
@@ -117,10 +122,14 @@ class TestResultController extends Controller
             ], 404);
         }
 
-        // Update the test result
-        $testResult->update([
-              'score' => $correctAnswersCount,
-        ]);
+
+        try {
+            $testResult = $this->testResultService->calculateAndSaveTestResult($validated['test_id'], $user->id);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 400);
+        }
 
         return response()->json([
             'message' => 'Результат успешно обновлён.',

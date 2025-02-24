@@ -3,14 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\Answer;
+use App\Models\GradingCriteria;
 use App\Models\StudentAnswer;
+use App\Models\Test;
 use App\Models\TestResult;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
+use App\Services\TestResultService;
+
 class StudentAnswerController extends Controller
 {
+
+
+    public function __construct(TestResultService $testResultService)
+    {
+        $this->testResultService = $testResultService;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -59,23 +70,17 @@ class StudentAnswerController extends Controller
 
         //Log::debug('last_answer value', ['last_answer' => $validated['last_answer']]);
 
-        if ($validated['last_answer']==1){
+        if ($validated['last_answer'] == 1) {
 
-            $testResult = TestResult::where('test_id', $validated['test_id'])
-                ->where('student_id', $user->id)
-                ->first();
-
-            $correctAnswersCount = StudentAnswer::where('student_id', $user->id)
-                ->where('test_id', $validated['test_id'])
-                ->where('is_correct', 1)
-                ->count();
-
-            $testResult->update([
-                'score' => $correctAnswersCount,
-            ]);
+            try {
+                $testResult = $this->testResultService->calculateAndSaveTestResult($validated['test_id'], $user->id);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'message' => $e->getMessage()
+                ], 400);
+            }
 
         }
-
 
         return response()->json([
             'message' => 'Ответ успешно сохранен',

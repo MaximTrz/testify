@@ -12,10 +12,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('test_results', function (Blueprint $table) {
-            $table->foreignId('group_id')
-                ->nullable()
-                ->constrained('groups')
-                ->nullOnDelete();
+            $table->integer('grade')->nullable()->after('group_id');
         });
     }
 
@@ -26,8 +23,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('test_results', function (Blueprint $table) {
-            $table->dropForeign(['group_id']);
-            $table->dropColumn('group_id');
+            $table->dropColumn('grade');
         });
     }
 };

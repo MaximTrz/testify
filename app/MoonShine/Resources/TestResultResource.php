@@ -4,22 +4,21 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Resources;
 
-use Illuminate\Database\Eloquent\Model;
+
 use App\Models\TestResult;
-use App\Models\Group;
-use App\Models\Test;
+
 
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\Layout\Box;
-use MoonShine\UI\Fields\ID;
+
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\UI\Fields\Number;
 
-use App\MoonShine\Resources\UserResource;
 
-use MoonShine\Laravel\Fields\Relationships\HasOneThrough;
+
+use Illuminate\Contracts\Database\Eloquent\Builder;
 
 /**
  * @extends ModelResource<TestResult>
@@ -39,7 +38,8 @@ class TestResultResource extends ModelResource
             //ID::make()->sortable(),
             BelongsTo::make('Студент', 'user', resource: UserResource::class, formatted:  'name'),
             BelongsTo::make('Тест', 'test', resource: TestResource::class, formatted:  'title'),
-            Number::make('Правильных ответов', 'score')
+            Number::make('Правильных ответов', 'score'),
+            Number::make('Оценка', 'grade')->disabled()
         ];
     }
 
@@ -51,9 +51,10 @@ class TestResultResource extends ModelResource
         return [
             Box::make([
                 //ID::make(),
-                BelongsTo::make('Тест', 'test', resource: TestResource::class)->disabled(),
+                BelongsTo::make('Тест', 'test', resource: TestResource::class, formatted:  'title')->disabled(),
                 BelongsTo::make('Студент', 'user', resource: UserResource::class, formatted:  'name')->disabled(),
-                Number::make('Правильных ответо', 'score')->disabled()
+                Number::make('Правильных ответов', 'score')->disabled(),
+                Number::make('Оценка', 'grade')->disabled()
             ])
         ];
     }
@@ -64,17 +65,44 @@ class TestResultResource extends ModelResource
     protected function detailFields(): iterable
     {
         return [
-            ID::make(),
+            BelongsTo::make('Тест', 'test', resource: TestResource::class, formatted:  'title' )->disabled(),
+            BelongsTo::make('Студент', 'user', resource: UserResource::class, formatted:  'name')->disabled(),
+            Number::make('Правильных ответов', 'score')->disabled(),
+            Number::make('Оценка', 'grade')->disabled()
         ];
     }
+
+
 
     protected function filters(): iterable
     {
         return [
-          BelongsTo::make('Тест', 'test', resource: TestResource::class, formatted: 'title')->nullable(),
-          BelongsTo::make('Студент', 'user', resource: UserResource::class, formatted: 'name')->nullable(),
-          BelongsTo::make('Группа', 'group', resource: GroupResource::class, formatted: 'name')->nullable(),
+            BelongsTo::make('Тест', 'test', resource: TestResource::class, formatted: 'title')
+                ->valuesQuery(function (Builder $query, BelongsTo $field) {
+
+                    if (auth()->user()->moonshine_user_role_id === 1) {
+                        return $query;
+                    }
+
+                    return $query->where('teacher_id', auth()->id());
+                })
+                ->nullable(),
+
+            BelongsTo::make('Студент', 'user', resource: UserResource::class, formatted:  'name')
+                ->nullable(),
+            BelongsTo::make('Группа', 'group', resource: GroupResource::class, formatted:  'name')
+                ->nullable(),
         ];
+    }
+
+    protected function modifyQueryBuilder(Builder $builder): Builder
+    {
+
+        if (auth()->user()->moonshine_user_role_id === 1) {
+            return $builder;
+        }
+
+        return $builder->where('teacher_id', auth()->id());
     }
 
     /**
