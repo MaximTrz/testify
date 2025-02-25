@@ -18,7 +18,7 @@ class TestResult extends Model
         'completed_at',
         'group_id',
         'teacher_id',
-        'grade'
+        'grade',
     ];
 
     //public $timestamps = false; // Отключаем timestamps, если их нет

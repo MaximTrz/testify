@@ -33,11 +33,13 @@ const Question: React.FC = () => {
         (payload) => {
             sendStudendAnswer({
                 test_id: payload.test_id,
+                result_id: payload.result_id,
                 question_id: payload.question_id,
                 answer_id: payload.answer_id,
                 last_answer:
                     currentQuestion === (testItem?.questions?.length ?? 0) - 1,
             });
+
             setIsAnswered(true);
         },
         [sendStudendAnswer],
@@ -116,6 +118,7 @@ const Question: React.FC = () => {
                             if (isAnswered) return;
                             sendAnwser({
                                 test_id: testItem.id,
+                                result_id: testItem.result_id,
                                 question_id: question.id,
                                 answer_id: answer.id,
                             });

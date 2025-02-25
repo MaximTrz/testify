@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Layouts;
 
+use App\MoonShine\Resources\TestGroupFinishedResource;
 use MoonShine\Laravel\Fields\Relationships\HasOne;
 use MoonShine\Laravel\Layouts\CompactLayout;
 use MoonShine\ColorManager\ColorManager;
@@ -32,6 +33,7 @@ use MoonShine\UI\Components\{Breadcrumbs,
     Layout\Wrapper,
     When};
 use App\MoonShine\Resources\GroupResource;
+use MoonShine\MenuManager\MenuGroup;
 use MoonShine\MenuManager\MenuItem;
 use App\MoonShine\Resources\GroupStudentResource;
 use App\MoonShine\Resources\UserResource;
@@ -55,12 +57,15 @@ final class MoonShineLayout extends CompactLayout
     {
         return [
             ...parent::menu(),
-            MenuItem::make('Группы', GroupResource::class),
-            MenuItem::make('Студенты', UserResource::class),
+            MenuGroup::make('Справочники', [
+                MenuItem::make('Группы', GroupResource::class),
+                MenuItem::make('Студенты', UserResource::class),
+            ]),
             MenuItem::make('Тесты', TestResource::class),
            // MenuItem::make('Вопросы', QuestionResource::class),
             MenuItem::make('Результаты', TestResultResource::class),
             MenuItem::make('Заданные', TestGroupResource::class),
+            MenuItem::make('Завершенные', TestGroupFinishedResource::class),
         ];
     }
 

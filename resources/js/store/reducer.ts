@@ -148,6 +148,7 @@ type TSendResultResponse = {
 
 export interface TSendAnswerPayload {
     test_id: number;
+    result_id: number;
     question_id: number;
     answer_id: number;
     last_answer: boolean;

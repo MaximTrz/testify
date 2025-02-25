@@ -21,35 +21,37 @@ class TestResultService
     {
         $gradingCriteria = GradingCriteria::where('test_id', $testId)->get();
 
-        if ($gradingCriteria->isEmpty()) {
-            throw new Exception("Grading criteria not found for the given test.");
-        }
-
+        $studentGrade = null;
         $correctAnswersCount = StudentAnswer::where('student_id', $studentId)
             ->where('test_id', $testId)
             ->where('is_correct', 1)
             ->count();
 
-        $studentGrade = 2; // Default grade
+        if (!($gradingCriteria->isEmpty()) ) {
+            //throw new Exception("Grading criteria not found for the given test.");
 
-        if ($correctAnswersCount > 0) {
-            $maxCorrect = $gradingCriteria->max('max_correct_answers');
+            $studentGrade = 2; // Default grade
 
-            if ($correctAnswersCount >= $maxCorrect) {
-                $studentGrade = 5;
-            } else {
-                $gradingCriteria = $gradingCriteria->sortBy('min_correct_answers');
+            if ($correctAnswersCount > 0) {
+                $maxCorrect = $gradingCriteria->max('max_correct_answers');
 
-                foreach ($gradingCriteria as $criteria) {
-                    if (
-                        $correctAnswersCount >= $criteria->min_correct_answers &&
-                        $correctAnswersCount <= $criteria->max_correct_answers
-                    ) {
-                        $studentGrade = $criteria->grade;
-                        break;
+                if ($correctAnswersCount >= $maxCorrect) {
+                    $studentGrade = 5;
+                } else {
+                    $gradingCriteria = $gradingCriteria->sortBy('min_correct_answers');
+
+                    foreach ($gradingCriteria as $criteria) {
+                        if (
+                            $correctAnswersCount >= $criteria->min_correct_answers &&
+                            $correctAnswersCount <= $criteria->max_correct_answers
+                        ) {
+                            $studentGrade = $criteria->grade;
+                            break;
+                        }
                     }
                 }
             }
+
         }
 
         $testResult = TestResult::updateOrCreate(

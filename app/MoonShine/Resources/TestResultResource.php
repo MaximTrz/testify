@@ -16,7 +16,7 @@ use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\UI\Fields\Number;
 
-
+use MoonShine\Laravel\Enums\Ability;
 
 use Illuminate\Contracts\Database\Eloquent\Builder;
 
@@ -85,7 +85,7 @@ class TestResultResource extends ModelResource
                 }
 
                 return $query->where('teacher_id', auth()->id());
-            }),
+            })->nullable(),
             BelongsTo::make('Студент', 'user', resource: UserResource::class, formatted:  'name')
                 ->nullable(),
             BelongsTo::make('Группа', 'group', resource: GroupResource::class, formatted:  'name')
@@ -102,6 +102,18 @@ class TestResultResource extends ModelResource
 
         return $builder->where('teacher_id', auth()->id());
     }
+
+    // Отключаем возможность создания новой записи
+    public function can(Ability|string $ability): bool
+    {
+        if ($ability === Ability::CREATE || $ability === 'create') {
+            return false; // Запрещаем создание записей
+        }
+
+        return parent::can($ability); // Передаем остальные действия в родительский метод
+    }
+
+
 
     /**
      * @param TestResult $item

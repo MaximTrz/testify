@@ -47,7 +47,8 @@ class StudentAnswerController extends Controller
             'test_id' => 'required|exists:tests,id',
             'question_id' => 'required|exists:questions,id',
             'answer_id' => 'required|exists:answers,id',
-            'last_answer' => 'required|boolean'
+            'last_answer' => 'required|boolean',
+            'result_id' => 'required|exists:test_results,id'
         ]);
 
         $user = Auth::user();
@@ -65,10 +66,11 @@ class StudentAnswerController extends Controller
             'test_id' => $validated['test_id'],
             'question_id' => $validated['question_id'],
             'answer_id' =>  $validated['answer_id'],
-            'is_correct' => $answer->is_correct
+            'is_correct' => $answer->is_correct,
+            'test_result_id' => $validated['result_id'],
         ]);
 
-        //Log::debug('last_answer value', ['last_answer' => $validated['last_answer']]);
+        //Log::debug('test_result_id', ['test_result_id' => $validated['result_id']]);
 
         if ($validated['last_answer'] == 1) {
 

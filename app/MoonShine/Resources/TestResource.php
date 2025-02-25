@@ -74,19 +74,6 @@ class TestResource extends ModelResource
         return $builder->where('teacher_id', auth()->id());
     }
 
-
-//    public function newQuery(): Builder
-//    {
-//        $query = parent::newQuery();
-//
-//        if (auth()->user()->moonshine_user_role_id !== 1) {
-//            $query->where('teacher_id', auth()->id());
-//        }
-//
-//        return $query;
-//    }
-
-
     /**
      * @return list<FieldContract>
      */

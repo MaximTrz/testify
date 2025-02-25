@@ -17,6 +17,7 @@ use MoonShine\UI\Fields\ID;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\ComponentContract;
 
+
 /**
  * @extends ModelResource<TestGroup>
  */
@@ -94,14 +95,31 @@ class TestGroupResource extends ModelResource
         return $item;
     }
 
+
+//    protected function modifyQueryBuilder(Builder $builder): Builder
+//    {
+//
+//        if (auth()->user()->moonshine_user_role_id === 1) {
+//            return $builder;
+//        }
+//
+//        return $builder->where('teacher_id', auth()->id());
+//    }
+
     protected function modifyQueryBuilder(Builder $builder): Builder
     {
+        // Фильтруем записи, чтобы показывать только те, где available_until > текущей даты
+        $builder->where(function ($query) {
+            $query->where('available_until', '>', now())
+                ->orWhereNull('available_until'); // Если нужно учитывать записи без даты
+        });
 
-        if (auth()->user()->moonshine_user_role_id === 1) {
-            return $builder;
+        // Проверяем роль пользователя
+        if (auth()->user()->moonshine_user_role_id !== 1) {
+            $builder->where('teacher_id', auth()->id());
         }
 
-        return $builder->where('teacher_id', auth()->id());
+        return $builder;
     }
 
 

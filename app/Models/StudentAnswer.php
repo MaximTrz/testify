@@ -17,7 +17,8 @@ class StudentAnswer extends Model
         'answer_id',
         'given_answer_text',
         'is_correct',
-        'student_id'
+        'student_id',
+        'test_result_id'
     ];
 
 //    public function testResult()
