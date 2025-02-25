@@ -49,7 +49,15 @@ class TestGroupResource extends ModelResource
             Box::make([
                 //ID::make(),
                 BelongsTo::make('Группа', 'group', resource: GroupResource::class, formatted: 'name'),
-                BelongsTo::make('Тест', 'test', resource: TestResource::class, formatted: 'title'),
+                BelongsTo::make('Тест', 'test', resource: TestResource::class, formatted: 'title')
+                    ->valuesQuery(function (Builder $query, BelongsTo $field) {
+
+                        if (auth()->user()->moonshine_user_role_id === 1) {
+                            return $query;
+                        }
+
+                        return $query->where('teacher_id', auth()->id());
+                    }),
                 Date::make('Доступен с', 'available_from')->withTime()->required(),
                 Date::make('Доступен по', 'available_until')->withTime()->required()
             ])

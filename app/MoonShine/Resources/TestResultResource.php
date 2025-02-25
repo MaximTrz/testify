@@ -78,16 +78,14 @@ class TestResultResource extends ModelResource
     {
         return [
             BelongsTo::make('Тест', 'test', resource: TestResource::class, formatted: 'title')
-                ->valuesQuery(function (Builder $query, BelongsTo $field) {
+            ->valuesQuery(function (Builder $query, BelongsTo $field) {
 
-                    if (auth()->user()->moonshine_user_role_id === 1) {
-                        return $query;
-                    }
+                if (auth()->user()->moonshine_user_role_id === 1) {
+                    return $query;
+                }
 
-                    return $query->where('teacher_id', auth()->id());
-                })
-                ->nullable(),
-
+                return $query->where('teacher_id', auth()->id());
+            }),
             BelongsTo::make('Студент', 'user', resource: UserResource::class, formatted:  'name')
                 ->nullable(),
             BelongsTo::make('Группа', 'group', resource: GroupResource::class, formatted:  'name')

@@ -71,11 +71,11 @@ class TestController extends Controller
             }])
             ->first();
 
-        
+
         if (!$test) {
             abort(404, 'Тест не найден или недоступен.');
         }
-        
+
         return view('tests.show', compact('test'));
     }
 
@@ -122,12 +122,14 @@ class TestController extends Controller
             ], 404);
         }
 
-        TestResult::create([
+        $testResult = TestResult::create([
             'student_id' => $user->id,
             'test_id' => $id,
             'group_id' => $group->id,
             'teacher_id' => $test->teacher_id
         ]);
+
+        $test->result_id = $testResult->id;
 
         return response()->json($test);
     }
