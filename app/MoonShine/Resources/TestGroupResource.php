@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\TestGroup;
 
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
+use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\Date;
@@ -71,7 +72,10 @@ class TestGroupResource extends ModelResource
     protected function detailFields(): iterable
     {
         return [
-            ID::make(),
+            //ID::make(),
+            BelongsTo::make('Группа', 'group', resource: GroupResource::class, formatted: 'name'),
+            BelongsTo::make('Тест', 'test', resource: TestResource::class, formatted: 'title'),
+            HasMany::make('Результаты', 'results', resource: TestResultResource::class)
         ];
     }
 

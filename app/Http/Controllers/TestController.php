@@ -108,6 +108,7 @@ class TestController extends Controller
             ->where('tests.id', $id)
             ->wherePivot('available_from', '<=', $currentTimestamp)
             ->wherePivot('available_until', '>=', $currentTimestamp)
+            ->withPivot('id')
 
             // ->withCount('questions') //
             ->first();
@@ -115,6 +116,7 @@ class TestController extends Controller
         $test->pivot->available_from = Carbon::parse($test->pivot->available_from)->translatedFormat('d.m.Y H:i');
         $test->pivot->available_until = Carbon::parse($test->pivot->available_until)->translatedFormat('d.m.Y H:i');
 
+        $testGroupId = $test?->pivot?->id;
 
         if (!$test) {
             return response()->json([
@@ -126,7 +128,8 @@ class TestController extends Controller
             'student_id' => $user->id,
             'test_id' => $id,
             'group_id' => $group->id,
-            'teacher_id' => $test->teacher_id
+            'teacher_id' => $test->teacher_id,
+            'test_group_id' => $testGroupId
         ]);
 
         $test->result_id = $testResult->id;

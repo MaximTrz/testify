@@ -20,6 +20,7 @@ class TestResult extends Model
         'group_id',
         'teacher_id',
         'grade',
+        'test_group_id'
     ];
 
     //public $timestamps = false; // Отключаем timestamps, если их нет
@@ -42,6 +43,11 @@ class TestResult extends Model
     public function answers(): HasMany
     {
         return $this->hasMany(StudentAnswer::class);
+    }
+
+    public function testGroup()
+    {
+        return $this->belongsTo(TestResult::class);
     }
 
 }

@@ -64,10 +64,10 @@ final class MoonShineLayout extends CompactLayout
             ]),
             MenuItem::make('Тесты', TestResource::class),
            // MenuItem::make('Вопросы', QuestionResource::class),
-            MenuItem::make('Результаты', TestResultResource::class),
+            //MenuItem::make('Результаты', TestResultResource::class),
             MenuItem::make('Заданные', TestGroupResource::class),
             MenuItem::make('Завершенные', TestGroupFinishedResource::class),
-            MenuItem::make('Ответы студента', StudentAnswerResource::class),
+            //MenuItem::make('Ответы студента', StudentAnswerResource::class),
         ];
     }
 
