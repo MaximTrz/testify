@@ -43,6 +43,7 @@ use App\MoonShine\Resources\AnswerResource;
 use App\MoonShine\Resources\GradingCriteriaResource;
 use App\MoonShine\Resources\TestResultResource;
 use App\MoonShine\Resources\TestGroupResource;
+use App\MoonShine\Resources\StudentAnswerResource;
 
 final class MoonShineLayout extends CompactLayout
 {
@@ -66,6 +67,7 @@ final class MoonShineLayout extends CompactLayout
             MenuItem::make('Результаты', TestResultResource::class),
             MenuItem::make('Заданные', TestGroupResource::class),
             MenuItem::make('Завершенные', TestGroupFinishedResource::class),
+            MenuItem::make('Ответы студента', StudentAnswerResource::class),
         ];
     }
 

@@ -46,4 +46,9 @@ class StudentAnswer extends Model
         return $this->belongsTo(User::class, 'student_id');
     }
 
+    public function testResult(): BelongsTo
+    {
+        return $this->belongsTo(TestResult::class);
+    }
+
 }

@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\MoonShine\Resources;
 
 
+use App\Models\StudentAnswer;
 use App\Models\TestResult;
 
 
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
+use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\Layout\Box;
 
@@ -68,7 +70,8 @@ class TestResultResource extends ModelResource
             BelongsTo::make('Тест', 'test', resource: TestResource::class, formatted:  'title' )->disabled(),
             BelongsTo::make('Студент', 'user', resource: UserResource::class, formatted:  'name')->disabled(),
             Number::make('Правильных ответов', 'score')->disabled(),
-            Number::make('Оценка', 'grade')->disabled()
+            Number::make('Оценка', 'grade')->disabled(),
+            HasMany::make('Ответы студента', 'answers', resource: StudentAnswerResource::class)
         ];
     }
 

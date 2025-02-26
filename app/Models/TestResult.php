@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TestResult extends Model
 {
@@ -36,6 +37,11 @@ class TestResult extends Model
     public function group()
     {
         return $this->belongsTo(Group::class, 'group_id');
+    }
+
+    public function answers(): HasMany
+    {
+        return $this->hasMany(StudentAnswer::class);
     }
 
 }

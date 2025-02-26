@@ -21,6 +21,7 @@ use App\MoonShine\Resources\GradingCriteriaResource;
 use App\MoonShine\Resources\TestResultResource;
 use App\MoonShine\Resources\TestGroupResource;
 use App\MoonShine\Resources\TestGroupFinishedResource;
+use App\MoonShine\Resources\StudentAnswerResource;
 
 class MoonShineServiceProvider extends ServiceProvider
 {
@@ -46,6 +47,7 @@ class MoonShineServiceProvider extends ServiceProvider
                 TestResultResource::class,
                 TestGroupResource::class,
                 TestGroupFinishedResource::class,
+                StudentAnswerResource::class,
             ])
             ->pages([
                 ...$config->getPages(),
