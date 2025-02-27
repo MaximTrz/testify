@@ -67,7 +67,7 @@ class TestResource extends ModelResource
     protected function modifyQueryBuilder(Builder $builder): Builder
     {
 
-        if (auth()->user()->moonshine_user_role_id === 1) {
+        if (auth()->user()->isSuperUser()) {
             return $builder;
         }
 

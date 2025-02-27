@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\MoonShine\Resources;
 
 
-use App\Models\StudentAnswer;
+
 use App\Models\TestResult;
 
 
@@ -109,8 +109,9 @@ class TestResultResource extends ModelResource
     // Отключаем возможность создания новой записи
     public function can(Ability|string $ability): bool
     {
-        if ($ability === Ability::CREATE || $ability === 'create') {
-            return false; // Запрещаем создание записей
+        // Запрещаем создание и редактирование записей
+        if (in_array($ability, [Ability::CREATE, Ability::UPDATE, 'create', 'update'])) {
+            return false;
         }
 
         return parent::can($ability); // Передаем остальные действия в родительский метод

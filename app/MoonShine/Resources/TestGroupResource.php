@@ -119,7 +119,7 @@ class TestGroupResource extends ModelResource
         });
 
         // Проверяем роль пользователя
-        if (auth()->user()->moonshine_user_role_id !== 1) {
+        if (auth()->user()->isSuperUser()) {
             $builder->where('teacher_id', auth()->id());
         }
 

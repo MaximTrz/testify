@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Resources;
 
-use Illuminate\Database\Eloquent\Model;
+
 use App\Models\StudentAnswer;
 
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
@@ -14,7 +14,10 @@ use MoonShine\UI\Fields\Checkbox;
 use MoonShine\UI\Fields\ID;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\ComponentContract;
-use MoonShine\UI\Fields\Text;
+
+use MoonShine\Laravel\Enums\Ability;
+
+use MoonShine\Contracts\UI\ActionButtonContract;
 
 /**
  * @extends ModelResource<StudentAnswer>
@@ -25,15 +28,16 @@ class StudentAnswerResource extends ModelResource
 
     protected string $title = 'Ответы студента';
 
+
     /**
      * @return list<FieldContract>
      */
     protected function indexFields(): iterable
     {
         return [
-            Checkbox::make('Верный', 'is_correct'),
             BelongsTo::make('Вопрос', 'question', resource: QuestionResource::class, formatted: 'question_text'),
             BelongsTo::make('Ответ студента', 'answer', resource: AnswerResource::class, formatted: 'answer_text'),
+            Checkbox::make('Верный', 'is_correct'),
         ];
     }
 
@@ -61,6 +65,17 @@ class StudentAnswerResource extends ModelResource
             Checkbox::make('Верный', 'is_correct'),
             //BelongsTo::make('Вопрос', 'question', resource: QuestionResource::class)->creatable()
         ];
+    }
+
+
+
+    public function can(Ability|string $ability): bool
+    {
+        if (in_array($ability, [Ability::CREATE, Ability::UPDATE, Ability::DELETE, Ability::VIEW, 'create', 'update', 'delete', 'view'])) {
+            return false;
+        }
+
+        return parent::can($ability);
     }
 
     /**
