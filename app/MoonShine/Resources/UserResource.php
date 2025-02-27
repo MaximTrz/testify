@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
+use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Fields\Relationships\HasOne;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\Layout\Box;
@@ -53,7 +54,7 @@ class UserResource extends ModelResource
                 Text::make('ФИО', 'name'),
                 Email::make('Email', 'email'),
                 Password::make('Пароль', 'password'),
-                BelongsTo::make('Группа', 'group', 'name', resource: GroupResource::class, )
+                BelongsTo::make('Группа', 'group', 'name', resource: GroupResource::class, ),
             ])
         ];
     }
@@ -66,7 +67,8 @@ class UserResource extends ModelResource
         return [
             Text::make('ФИО', 'name'),
             Email::make('Email', 'email'),
-            BelongsTo::make('Группа', 'group', 'name', resource: GroupResource::class, )
+            BelongsTo::make('Группа', 'group', 'name', resource: GroupResource::class, ),
+            HasMany::make('Результаты', 'testResult', resource: TestResultResource::class)
         ];
     }
 

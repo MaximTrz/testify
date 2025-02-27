@@ -74,9 +74,9 @@ const Question: React.FC = () => {
 
     useEffect(() => {
         if (timeLeft === 0) {
-            setNextQuestion();
+            skipAnswer();
         }
-    }, [timeLeft, setNextQuestion]);
+    }, [timeLeft]);
 
     const answers = useMemo(() => {
         if (!question) return [];
