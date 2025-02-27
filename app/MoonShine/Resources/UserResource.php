@@ -27,14 +27,18 @@ class UserResource extends ModelResource
 
     protected string $title = 'Студенты';
 
+    protected bool $withPolicy = true;
+
     /**
      * @return list<FieldContract>
      */
     protected function indexFields(): iterable
     {
         return [
-            ID::make()->sortable(),
-            Text::make('ФИО', 'name')
+            //ID::make()->sortable(),
+            Text::make('ФИО', 'name'),
+            Email::make('Email', 'email'),
+            BelongsTo::make('Группа', 'group', 'name', resource: GroupResource::class, )
         ];
     }
 
@@ -45,7 +49,7 @@ class UserResource extends ModelResource
     {
         return [
             Box::make([
-                ID::make(),
+            //    ID::make(),
                 Text::make('ФИО', 'name'),
                 Email::make('Email', 'email'),
                 Password::make('Пароль', 'password'),
@@ -60,7 +64,9 @@ class UserResource extends ModelResource
     protected function detailFields(): iterable
     {
         return [
-            ID::make(),
+            Text::make('ФИО', 'name'),
+            Email::make('Email', 'email'),
+            BelongsTo::make('Группа', 'group', 'name', resource: GroupResource::class, )
         ];
     }
 

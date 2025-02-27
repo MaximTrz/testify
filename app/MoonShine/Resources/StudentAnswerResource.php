@@ -17,7 +17,6 @@ use MoonShine\Contracts\UI\ComponentContract;
 
 use MoonShine\Laravel\Enums\Ability;
 
-use MoonShine\Contracts\UI\ActionButtonContract;
 
 /**
  * @extends ModelResource<StudentAnswer>
@@ -27,6 +26,8 @@ class StudentAnswerResource extends ModelResource
     protected string $model = StudentAnswer::class;
 
     protected string $title = 'Ответы студента';
+
+    protected bool $withPolicy = true;
 
 
     /**
@@ -69,14 +70,14 @@ class StudentAnswerResource extends ModelResource
 
 
 
-    public function can(Ability|string $ability): bool
-    {
-        if (in_array($ability, [Ability::CREATE, Ability::UPDATE, Ability::DELETE, Ability::VIEW, 'create', 'update', 'delete', 'view'])) {
-            return false;
-        }
-
-        return parent::can($ability);
-    }
+//    public function can(Ability|string $ability): bool
+//    {
+//        if (in_array($ability, [Ability::CREATE, Ability::UPDATE, Ability::DELETE, Ability::VIEW, 'create', 'update', 'delete', 'view'])) {
+//            return false;
+//        }
+//
+//        return parent::can($ability);
+//    }
 
     /**
      * @param StudentAnswer $item

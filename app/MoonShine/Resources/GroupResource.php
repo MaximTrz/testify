@@ -24,14 +24,16 @@ class GroupResource extends ModelResource
 
     protected string $title = 'Группы';
 
+    protected bool $withPolicy = true;
+
     /**
      * @return list<FieldContract>
      */
     protected function indexFields(): iterable
     {
         return [
-            ID::make()->sortable(),
-            Text::make('Наименование', 'name')
+            //ID::make()->sortable(),
+            Text::make('Наименование', 'name'),
         ];
     }
 
@@ -42,7 +44,7 @@ class GroupResource extends ModelResource
     {
         return [
             Box::make([
-                ID::make(),
+                //ID::make(),
                 Text::make('Наименование', 'name'),
                 HasMany::make('Студенты', 'users', resource: UserResource::class)->creatable()
             ])
@@ -55,8 +57,9 @@ class GroupResource extends ModelResource
     protected function detailFields(): iterable
     {
         return [
-            ID::make(),
-            Text::make('Наименование', 'name')
+            //ID::make(),
+            Text::make('Наименование', 'name'),
+            HasMany::make('Студенты', 'users', resource: UserResource::class)
         ];
     }
 

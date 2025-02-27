@@ -56,8 +56,11 @@ final class MoonShineLayout extends CompactLayout
 
     protected function menu(): array
     {
+        $user = auth()->user();
         return [
-            ...parent::menu(),
+
+            ...($user->isSuperUser() ? parent::menu() : []),
+
             MenuGroup::make('Справочники', [
                 MenuItem::make('Группы', GroupResource::class),
                 MenuItem::make('Студенты', UserResource::class),
