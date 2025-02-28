@@ -24,8 +24,8 @@ return [
 //    'logo' => 'vendor/moonshine/logo.svg',
 //    'logo_small' => 'vendor/moonshine/logo-small.svg',
 
-    'logo' => 'app/public/img/testify-logo.png',
-    'logo_small' => 'app/public/img/testify-logo-small.png',
+    'logo' => 'img/testify-logo.png',
+    'logo_small' => 'img/testify-logo-small.png',
 
 
     // Default flags
@@ -78,7 +78,7 @@ return [
     ],
 
     // Layout, pages, forms
-    'layout' => App\MoonShine\Layouts\MoonShineLayout::class,
+    'layout' => App\MoonShine\Layouts\TestifyMain::class,
 
     'forms' => [
         'login' => LoginForm::class,
