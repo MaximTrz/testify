@@ -1,0 +1,27 @@
+@import "../sass/variables";
+
+.dropdown-item {
+    font-family: $font-family-sans-serif;
+    color: $base-title;
+    font-size: 18px;
+    font-weight: 400;
+    display: flex; /* Используем flexbox для выравнивания */
+    align-items: center; /* Центрирование содержимого по вертикали */
+    justify-content: center; /* Центрирование текста и иконки по горизонтали */
+    padding: 10px 15px; /* Отступы для кнопки */
+    text-decoration: none; /* Убрать подчеркивание */
+    transition: background-color 0.2s ease; /* Плавный переход при наведении */
+    position: relative; /* Для возможного дополнительного позиционирования */
+}
+
+
+.dropdown-item:hover {
+    color: #000; /* Цвет текста при наведении */
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-menu {
+    border: 1px solid rgba($base-title, 0.1); /* Пример: цвет из переменной с 50% прозрачности */
+
+}

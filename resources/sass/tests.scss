@@ -4,21 +4,30 @@
     }
     &__item{
         margin-bottom: 40px;
+        padding: 15px;
+        &:hover{
+            background: rgba($base-color, 0.3);
+        }
     }
     &__link{
         text-decoration: none;
         color: #000;
     }
     &__title{
+        font-size: 18px;
+        font-weight: bold;
         font-family: $font-family-sans-serif;
-        font-size: 32px;
-        font-weight: 400;
+        color: $base-title;
         display: block;
         margin-bottom: 10px;
     }
     &__time{
         font-family: $font-family-sans-serif;
-        font-size: 24px;
+
+    }
+    .tests__time-label {
+        font-size: 16px;
+        color: #666;
         font-weight: 400;
     }
 }

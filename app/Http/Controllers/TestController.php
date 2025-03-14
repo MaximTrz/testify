@@ -43,9 +43,38 @@ class TestController extends Controller
         return view('tests.inwork', compact('tests'));
     }
 
+
     public function completed()
     {
-        return view('tests.completed');
+        $user = Auth::user();
+
+//        $results = TestResult::where('student_id', $user->id)
+//            ->whereNotNull('grade') // Фильтрация на уровне БД
+//            ->with(['test' => fn($q) => $q->select('id', 'title')])
+//            ->select('id', 'test_id', 'score', 'grade', 'completed_at')
+//            ->orderBy('completed_at', 'desc')
+//            ->get()
+//            ->map(function($item) {
+//                return [
+//                    'test_title' => $item->test->title ?? 'Удаленный тест',
+//                    'score' => $item->score,
+//                    'grade' => $item->grade,
+//                    'completed_at' =>
+//                        Carbon::parse($item->completed_at)->format('d.m.Y H:i')
+//                ];
+//            });
+
+        // Используем paginate() вместо get()
+        $results = TestResult::where('student_id', $user->id)
+            ->whereNotNull('grade') // Фильтр по наличию оценки
+            ->with(['test' => fn($q) => $q->select('id', 'title')]) // Подгружаем название теста
+            ->select('id', 'test_id', 'score', 'grade', 'completed_at', 'test_id') // Добавляем test_id
+            ->orderBy('completed_at', 'desc')
+            ->paginate(10); // Пагинация по 10 записей
+
+        //dd($results);
+
+        return view('tests.completed', compact('results'));
     }
 
     public function show($id)

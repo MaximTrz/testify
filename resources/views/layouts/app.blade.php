@@ -79,7 +79,7 @@
                         </li>
 
                         <li class="sidebar__item">
-                            <a href="#section2" class="sidebar__link">
+                            <a href="{{ route('completed') }}" class="sidebar__link">
                                 <img class="sidebar__icon" src=" {{ asset('img/done.svg') }}" alt="done">
                             Выполненные тесты</a>
                         </li>
@@ -88,17 +88,18 @@
 
                 </nav>
 
-                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="{{ route('logout') }}"
-                        onclick="event.preventDefault();
-                                        document.getElementById('logout-form').submit();">
-                        {{ __('Выход') }}
-                    </a>
+        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{{ route('logout') }}"
+            onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();">
+                <img src="{{ asset('img/exit.svg') }}" alt="Выход">
+                {{ __('Выход') }}
+            </a>
 
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                        @csrf
-                    </form>
-                </div>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                @csrf
+            </form>
+        </div>
 
             </aside>
             @endauth

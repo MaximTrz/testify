@@ -17,6 +17,8 @@
 @import "aside";
 @import "tests";
 @import "test";
+@import "test-list";
+@import "dropdown";
 
 @import "start";
 
@@ -25,6 +27,8 @@
 #test-app{
     height: 100%;
 }
+
+
 
 .container {
     width: 100%;

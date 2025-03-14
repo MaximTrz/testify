@@ -20,10 +20,9 @@ class TestResult extends Model
         'group_id',
         'teacher_id',
         'grade',
-        'test_group_id'
+        'test_group_id',
     ];
 
-    //public $timestamps = false; // Отключаем timestamps, если их нет
 
     public function test()
     {
