@@ -1,0 +1,76 @@
+// 🔹 Современные размеры экранов
+$mobile-width: 375px;
+$tablet-width: 768px;
+$laptop-width: 1024px;
+$desktop-width: 1280px;
+$large-desktop-width: 1440px;
+$ultrawide-width: 1920px;
+
+// 🔹 Миксины для адаптивности
+
+// 📱 Мобильные устройства (до 767px)
+@mixin mobile {
+  @media only screen and (max-width: #{$tablet-width - 1px}) {
+    @content;
+  }
+}
+@mixin mobile-min {
+  @media only screen and (min-width: #{$mobile-width}) {
+    @content;
+  }
+}
+
+// 📟 Планшеты (768px - 1023px)
+@mixin tablet {
+  @media only screen and (min-width: #{$tablet-width}) and (max-width: #{$laptop-width - 1px}) {
+    @content;
+  }
+}
+@mixin tablet-min {
+  @media only screen and (min-width: #{$tablet-width}) {
+    @content;
+  }
+}
+
+// 💻 Ноутбуки (1024px - 1279px)
+@mixin laptop {
+  @media only screen and (min-width: #{$laptop-width}) and (max-width: #{$desktop-width - 1px}) {
+    @content;
+  }
+}
+@mixin laptop-min {
+  @media only screen and (min-width: #{$laptop-width}) {
+    @content;
+  }
+}
+
+// 🖥 Десктопы (1280px - 1439px)
+@mixin desktop {
+  @media only screen and (min-width: #{$desktop-width}) and (max-width: #{$large-desktop-width - 1px}) {
+    @content;
+  }
+}
+@mixin desktop-min {
+  @media only screen and (min-width: #{$desktop-width}) {
+    @content;
+  }
+}
+
+// 🖥️ Большие экраны (1440px - 1919px)
+@mixin large-desktop {
+  @media only screen and (min-width: #{$large-desktop-width}) and (max-width: #{$ultrawide-width - 1px}) {
+    @content;
+  }
+}
+@mixin large-desktop-min {
+  @media only screen and (min-width: #{$large-desktop-width}) {
+    @content;
+  }
+}
+
+// 🖥️💨 Ультраширокие экраны (1920px+)
+@mixin ultrawide {
+  @media only screen and (min-width: #{$ultrawide-width}) {
+    @content;
+  }
+}
