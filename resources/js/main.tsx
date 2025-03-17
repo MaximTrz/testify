@@ -9,18 +9,22 @@ const rootElement = document.getElementById("test-app");
 document.addEventListener("DOMContentLoaded", () => {
     const burger = document.querySelector(".header__burger");
     const sidebar = document.querySelector(".sidebar");
+    const overlay = document.querySelector(".sidebar-overlay");
+
     const body = document.body;
 
     if (burger && sidebar) {
         const closeMenu = () => {
             burger.classList.remove("is-active");
             sidebar.classList.remove("is-open");
+            overlay.classList.remove("active");
             body.style.overflow = "";
         };
 
         burger.addEventListener("click", () => {
             burger.classList.toggle("is-active");
             sidebar.classList.toggle("is-open");
+            overlay.classList.toggle("active");
             body.style.overflow = sidebar.classList.contains("is-open")
                 ? "hidden"
                 : "";
