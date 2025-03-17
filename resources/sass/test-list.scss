@@ -1,8 +1,13 @@
 @import "../sass/variables";
+@import "../sass/mixins";
 
 .page {
     padding: 20px;
     height: 100%;
+    @include mobile{
+        padding: 0;
+    }
+    
 }
 
 .page__title {

@@ -21,7 +21,6 @@
 
     <script>
         window.authToken = "{{ session('authToken') }}";
-        console.log(window.authToken)
     </script>
 
     <div class="layout">
@@ -31,6 +30,7 @@
             <div class="container">
 
                 <div class="header">
+
                     @auth
                         <div class="header__group">
                             <img class="header__group-image" src="{{ asset('img/comp.svg') }}" alt="Группа">
@@ -51,7 +51,18 @@
                         </div>
                     @endauth
 
+                <div class="header__burger-wrapper"> 
+                    <div class="header__burger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </div>
+                
+                </div>
+
+
+                </div>
+
             </div>
 
         </header>
@@ -114,6 +125,8 @@
             @endauth
 
         </div>
+
+        <div class="sidebar-overlay"></div>
 
         <footer class="layout__footer">
 

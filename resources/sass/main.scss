@@ -1,11 +1,61 @@
+@import "../sass/variables";
+@import "../sass/mixins";
+
 .main{           
     display: grid;
     grid-template-columns: 1fr 3fr;
     gap: 40px;
     width: 100%;
     height: 100%;
+    @include mobile{
+        display: flex;
+        flex-direction: column;
+    }
 }
 
 .content{    
     height: 100%;
+}
+
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+  opacity: 0;
+  transition: opacity 0.3s ease;  
+}
+
+.sidebar-overlay.active {
+  display: block;
+  opacity: 1;
+}
+
+@include mobile{
+   .main {
+    position: relative;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    bottom: 0;
+    width: 85%;
+    max-width: 350px;
+    z-index: 999;
+    background: white;
+    transition: left 0.3s ease;
+    overflow-y: auto;
+  }
+
+  .sidebar.is-open {
+    left: 0;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);    
+  }
 }
