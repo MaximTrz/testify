@@ -1,4 +1,5 @@
 @import "../../../sass/variables";
+@import "../../../sass/mixins";
 
 .grade{
     display: flex;
@@ -11,27 +12,43 @@
         font-size: 32px;
         text-align: center;
         margin-bottom: 30px;
+        @include mobile{
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
     }
     &__details{  
         flex: 1 1 auto;
-        padding: 40px;      
+        padding: 40px; 
+        gap: 15px;     
         background-color: $base-color;
         text-align: center;
         border-radius: 30px;   
         display: flex;
         flex-direction: column;
-        justify-content: space-between;           
+        justify-content: space-between;
+        @include mobile{
+            padding: 20px;  
+        }           
     }
     &__result-text{
         font-family: $font-family-sans-serif;
         font-weight: 400;
         font-size: 32px;
         text-transform: uppercase;
+        @include mobile{
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
     }
     &__points{
         font-family: $font-family-sans-serif;
         font-weight: 400;
         font-size: 32px;
+        @include mobile{
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
     }
     &__lead-time{
         font-family: $font-family-sans-serif;
@@ -45,19 +62,39 @@
         font-family: $base-font;
         font-weight: 400;
         font-size: 64px;
-        font-family: "Poller One", serif;        
+        font-family: "Poller One", serif;    
+        @include mobile{
+            font-size: 32px;
+
+        }    
     }
     &__explanation{
        font-family: $font-family-sans-serif; 
        font-weight: 400;
-       font-size: 64px;
+       font-size: 64px;       
+        @include mobile{
+            font-size: 24px;                      
+        }
+        @include tablet{
+            font-size: 32px;            
+        }
+        @include desktop{
+            font-size: 32px;  
+        }
+        @include laptop{
+            font-size: 32px;  
+        }
     }
     &__teachers-mark{
         position: relative;
         font-family: $font-family-sans-serif;
         font-weight: 400;
         font-size: 25px;
-        color: $base-title;                
+        color: $base-title;
+        @include mobile{
+            font-size: 18px;
+        }
+            
         &::before{
             position: absolute;
             content: "";
@@ -71,6 +108,15 @@
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
+            @include mobile{
+                display: none;
+            }
+            @include tablet{
+                display: none;
+            }    
+            @include laptop{
+                display: none;
+            }    
         }
     }
 }

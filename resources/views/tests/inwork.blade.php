@@ -19,15 +19,14 @@
                             <strong class="tests__title">{{ $test->title }}</strong>
                             <div class="tests__time">
                                 <span class="tests__time-label">Срок выполнения:</span>
-                                с {{ \Carbon\Carbon::parse($test->pivot->available_from)->format('d.m.Y H:i') }}
-                                до
-                                {{ \Carbon\Carbon::parse($test->pivot->available_until)->format('d.m.Y H:i') }}
+                                <span class="tests__time-start">с {{ \Carbon\Carbon::parse($test->pivot->available_from)->format('d.m.Y H:i') }}
+                                 до {{ \Carbon\Carbon::parse($test->pivot->available_until)->format('d.m.Y H:i') }}</span>
                             </div>
                         </a>
                     </li>
                 @endforeach
             </ul>
-        
+
         </div>
 
         @endif

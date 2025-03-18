@@ -17,8 +17,6 @@
 
 <body>
 
-
-
     <script>
         window.authToken = "{{ session('authToken') }}";
     </script>
@@ -51,14 +49,16 @@
                         </div>
                     @endauth
 
-                <div class="header__burger-wrapper"> 
-                    <div class="header__burger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-                
-                </div>
+
+                    <div class="header__burger-wrapper">
+                        @auth
+                            <div class="header__burger">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        @endauth
+                    </div>
 
 
                 </div>
@@ -85,14 +85,14 @@
                         <li class="sidebar__item">
                             <a href="{{ route('inwork') }}" class="sidebar__link">
                                 <img class="sidebar__icon" src="{{ asset('img/inwork.svg') }}" alt="all">
-                                Заданные тесты
+                                Заданные
                             </a>
                         </li>
 
                         <li class="sidebar__item">
                             <a href="{{ route('completed') }}" class="sidebar__link">
                                 <img class="sidebar__icon" src=" {{ asset('img/done.svg') }}" alt="done">
-                            Выполненные тесты</a>
+                            Выполненные</a>
                         </li>
 
                     </ul>

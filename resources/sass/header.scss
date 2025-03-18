@@ -11,6 +11,7 @@
     min-height: 140px;
     padding: 30px 0;
 
+    // 📱 Мобильная версия (до 767px)
     @include mobile {
         grid-template-columns: auto 1fr auto;
         grid-template-rows: auto auto;
@@ -23,6 +24,24 @@
         padding: 15px 0;
     }
 
+    // 📟 Планшетная версия (768px - 1023px)
+    @include tablet {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: auto;
+        grid-template-areas: 
+            "group logo person";
+        gap: 30px;
+        min-height: 120px;
+        padding: 20px 0;
+    }
+
+    @include laptop {
+        gap: 35px;
+        min-height: 130px;
+        padding: 25px 0;
+    }
+
+
     &__group {
         display: flex;
         align-items: center;        
@@ -34,6 +53,15 @@
             justify-content: center;
         }
 
+        @include tablet {
+            flex-direction: row;
+            gap: 20px;
+        }
+
+        @include laptop {
+            gap: 25px;
+        }
+
         &-name {
             font-family: $base-font;
             color: $base-title;
@@ -43,6 +71,14 @@
             @include mobile {
                 font-size: 18px;
             }
+
+            @include tablet {
+                font-size: 36px;
+            }
+
+            @include laptop {
+                font-size: 42px;
+            }
         }
 
         &-image {
@@ -51,6 +87,15 @@
             @include mobile {
                 max-width: 50px;
             }
+
+            @include tablet {
+                max-width: 60px;
+            }
+
+            @include laptop {
+                max-width: 62px;
+            }
+
         }
     }
 
@@ -65,6 +110,15 @@
         @include mobile {
             font-size: 36px;
         }
+
+        @include tablet {
+            font-size: 48px;
+        }
+
+        @include laptop {
+            font-size: 56px;
+        }
+
     }
 
     &__person {
@@ -76,6 +130,14 @@
         @include mobile {
             justify-content: center;           
             flex-wrap: wrap;
+        }
+
+        @include tablet {
+            gap: 15px;
+        }
+
+        @include laptop {
+            gap: 12px;
         }
 
         &-name {
@@ -90,6 +152,17 @@
                 font-size: 16px;
                 max-width: 100%;
             }
+
+            @include tablet {
+                font-size: 24px;
+                max-width: 220px;
+            }
+
+            @include laptop {
+                font-size: 27px;
+                max-width: 260px;
+            }
+
         }
 
         &-image {
@@ -98,6 +171,16 @@
             @include mobile {
                 display: none;
             }
+
+            @include tablet {
+                display: block;
+                max-width: 60px;
+            }
+
+            @include laptop {
+                max-width: 62px;
+            }
+
         }
     }
 
@@ -110,6 +193,10 @@
             justify-content: center;
             align-items: center;
         }
+
+        @include tablet {
+            display: none;
+        }
     }
 
     &__burger {
@@ -120,7 +207,7 @@
         flex-direction: column;
         justify-content: space-between;
         align-items: center;
-
+        
         span {
             display: block;
             height: 4px;
@@ -131,6 +218,9 @@
         }
 
         &.is-active {
+            z-index: 999;
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+                      
             span:nth-child(1) {
                 transform: translateY(10px) rotate(45deg);
             }

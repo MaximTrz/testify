@@ -1,3 +1,5 @@
+@import "../sass/variables";
+@import "../sass/mixins";
 .tests{    
     &__list{
         list-style: none;
@@ -9,13 +11,18 @@
         &:hover{
             background: rgba($base-color, 0.3);
         }
+        @include mobile{
+            padding: 15px 0px;
+            margin-bottom: 0px;
+            border-bottom: 1px solid rgba($base-title, 0.3);
+        }
     }
     &__link{
         text-decoration: none;
         color: #000;
     }
     &__title{
-        font-size: 18px;
+        font-size: 22px;
         font-weight: bold;
         font-family: $font-family-sans-serif;
         color: $base-title;
@@ -24,8 +31,19 @@
     }
     &__time{
         font-family: $font-family-sans-serif;
+        @include mobile{
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        @include tablet{
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
 
     }
+
     .tests__time-label {
         font-size: 16px;
         color: #666;
