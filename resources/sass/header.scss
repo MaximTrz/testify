@@ -30,15 +30,20 @@
         grid-template-rows: auto;
         grid-template-areas: 
             "group logo person";
-        gap: 30px;
-        min-height: 120px;
-        padding: 20px 0;
+        gap: 35px;        
+        min-height: auto;
+        padding: 10px 0;        
     }
 
     @include laptop {
-        gap: 35px;
-        min-height: 130px;
-        padding: 25px 0;
+        gap: 35px;        
+        min-height: auto;
+        padding: 10px 0;        
+    }
+
+    @include desktop{
+        min-height: auto;
+        padding: 10px 0;
     }
 
 

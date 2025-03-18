@@ -13,6 +13,18 @@
         gap: 20px;
     }
 
+    @include tablet{
+        gap: 30px;
+    }
+
+    @include laptop{
+        gap: 30px;
+    }
+
+    @include desktop{
+        gap: 30px;
+    }
+
     grid-template-areas: 
         "header header header"
         "main main main"
