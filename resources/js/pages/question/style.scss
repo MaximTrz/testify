@@ -15,7 +15,8 @@
             margin-bottom: 10px;
         }
         @include desktop {
-            font-size: 32px;
+            font-size: 28px;
+            margin-bottom: 8px;
         }
     }
     &__test-title{
@@ -28,8 +29,12 @@
             font-size: 32px;
         }
         @include laptop {
-            font-size: 36px;
+            font-size: 32px;
         }
+        @include desktop {
+            font-size: 32px;
+        }
+
     }
     &__test-time{
         font-family: $font-family-sans-serif;
@@ -41,8 +46,12 @@
             margin-bottom: 25px;
         }
         @include laptop {
-            font-size: 22px;
+            font-size: 20px;
             margin-bottom: 30px;
+        }
+        @include desktop {
+            font-size: 20px;
+            margin-bottom: 25px;
         }
     }
     &__header{
@@ -66,7 +75,10 @@
             font-size: 28px;
         }
         @include laptop {
-            font-size: 32px;
+            font-size: 30px;
+        }
+        @include desktop {
+            font-size: 30px;
         }
     }
     &__timer{
@@ -107,6 +119,16 @@
                 min-height: 40px;
             }
         }
+
+        @include desktop {
+            font-size: 30px; 
+            padding-right: 48px;            
+            &::after {
+                min-width: 38px;
+                min-height: 38px;
+            }
+        }
+
     }
     &__text{
         font-family: $font-family-sans-serif;
@@ -126,8 +148,8 @@
             margin-bottom: 35px;
         }
         @include desktop {
-            font-size: 25px;
-            margin-bottom: 40px;
+            font-size: 24px;
+            margin-bottom: 38px;
         }
     }
     &__answer-item{
@@ -225,7 +247,7 @@
             font-size: 22px;
         }
         @include desktop {
-            font-size: 25px;
+            font-size: 22px;
         }
 
     }
@@ -242,6 +264,10 @@
         @include laptop {
             font-size: 22px;
             margin-bottom: 15px;
+        }
+        @include desktop {
+            font-size: 20px;
+            margin-bottom: 12px;
         }
     }
     &__skip-wrapper{
@@ -263,8 +289,13 @@
         }
         @include laptop {
             padding: 10px 30px;
-            font-size: 20px;
+            font-size: 18px;
         }
+        @include desktop {
+            padding: 9px 28px;
+            font-size: 18px;
+        }
+
     }
 
 

@@ -1,9 +1,8 @@
 @import "../sass/variables";
 @import "../sass/mixins";
 
-.test{
-
-    &__title{
+.test {
+    &__title {
         font-family: $font-family-sans-serif;
         font-size: 32px;
         font-weight: 400;
@@ -23,13 +22,12 @@
             margin-bottom: 9px;
         }
         @include desktop {
-            font-size: 32px;
-            margin-bottom: 10px;
+            font-size: 30px; // Уменьшено с 32px
+            margin-bottom: 8px; // Уменьшено с 10px
         }
-
     }
 
-    &__time{
+    &__time {
         font-family: $font-family-sans-serif;
         font-size: 24px;
         font-weight: 400;
@@ -49,13 +47,12 @@
             margin-bottom: 25px;
         }
         @include desktop {
-            font-size: 24px;
-            margin-bottom: 30px;
+            font-size: 22px; // Уменьшено с 24px
+            margin-bottom: 25px; // Уменьшено с 30px
         }
-
     }
 
-    &__instruction{
+    &__instruction {
         font-family: $font-family-sans-serif;
         font-size: 24px;
         font-weight: 400;
@@ -71,15 +68,15 @@
         }
         @include laptop {
             font-size: 22px;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
         }
         @include desktop {
-            font-size: 24px;
-            margin-bottom: 30px;
+            font-size: 22px;
+            margin-bottom: 15px;
         }
     }
 
-    &__instruction-title{
+    &__instruction-title {
         font-family: $font-family-sans-serif;
         font-size: 24px;
         font-weight: 400;
@@ -95,12 +92,12 @@
             margin-bottom: 9px;
         }
         @include desktop {
-            font-size: 24px;
-            margin-bottom: 10px;
+            font-size: 22px; // Уменьшено с 24px
+            margin-bottom: 8px; // Уменьшено с 10px
         }
     }
 
-    &__instruction-block{
+    &__instruction-block {
         font-family: $font-family-sans-serif;
         margin-bottom: 10px;
         @include mobile {
@@ -110,14 +107,18 @@
             margin-bottom: 8px;
         }
         @include laptop {
-            margin-bottom: 9px;
+            margin-bottom: 5px;
         }
         @include desktop {
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
     }
 
-    &__criteria{
+    &__criteria-list{
+        list-style: none;
+    }
+
+    &__criteria {
         margin-bottom: 30px;
         @include mobile {
             font-size: 20px;
@@ -130,11 +131,11 @@
             margin-bottom: 25px;
         }
         @include desktop {
-            margin-bottom: 30px;
+            margin-bottom: 25px; // Уменьшено с 30px
         }
     }
 
-    &__criteria-title{
+    &__criteria-title {
         font-family: $font-family-sans-serif;
         color: $base-title;
         font-size: 24px;
@@ -147,17 +148,11 @@
             font-size: 22px;
         }
         @include desktop {
-            font-size: 24px;
+            font-size: 22px; // Уменьшено с 24px
         }
     }
 
-    &__criteria-list{
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    &__criteria-item{
+    &__criteria-item {
         font-family: $font-family-sans-serif;
         font-size: 24px;
         font-weight: 400;
@@ -173,9 +168,8 @@
             padding: 10px 0;
         }
         @include desktop {
-            font-size: 24px;
-            padding: 12px 0;
+            font-size: 22px;
+            padding: 2px 0;
         }
     }
-
 }
