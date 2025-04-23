@@ -14,6 +14,7 @@ class TestGroup extends Model
     protected $fillable = [
         'test_id',
         'group_id',
+        'teacher_id'
     ];
 
     public function test()

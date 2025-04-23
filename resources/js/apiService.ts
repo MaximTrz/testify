@@ -1,12 +1,13 @@
 import axios from "axios";
 
 export default class ApiService {
-    baseUrl = "http://127.0.0.1:8000";
+    baseUrl = "http://q922336g.beget.tech";
 
     constructor() {
         axios.interceptors.request.use(
             (config) => {
                 if (window.authToken) {
+                    console.log(window.authToken);
                     config.headers.Authorization = `Bearer ${window.authToken}`;
                 }
                 return config;

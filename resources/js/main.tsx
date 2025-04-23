@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     } else {
-        console.error("Burger or sidebar elements are not found in the DOM.");
+        console.log("Burger or sidebar elements are not found in the DOM.");
     }
 });
 
@@ -57,4 +57,6 @@ if (rootElement) {
             <Router />
         </Provider>,
     );
+} else {
+    console.log("Не найден корневой элемент приложения");
 }

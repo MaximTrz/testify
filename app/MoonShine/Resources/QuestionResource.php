@@ -53,8 +53,6 @@ class QuestionResource extends ModelResource
                 Text::make('Текст вопроса', 'question_text'),
                 Number::make('Время', 'time_limit'),
 
-                //HasMany::make('Варианты ответа', 'Answers', resource: AnswerResource::class)->creatable(),
-
                 RelationRepeater::make(
                     'Варианты ответа',
                     'Answers',
@@ -62,7 +60,7 @@ class QuestionResource extends ModelResource
                 )->fields([
                     Text::make('Текст ответа', 'answer_text'),
                     Checkbox::make('Верный', 'is_correct'),
-                ]),
+                ])->removable(),
 
                 BelongsTo::make('Тест', 'test', resource: TestResource::class)
             ])

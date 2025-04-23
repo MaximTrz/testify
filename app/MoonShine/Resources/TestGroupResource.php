@@ -92,7 +92,7 @@ class TestGroupResource extends ModelResource
 
     public function beforeCreating(mixed $item): mixed
     {
-        if ($item instanceof Test) {
+        if ($item instanceof TestGroup) {
             $item->teacher_id = auth()->id();
         }
 

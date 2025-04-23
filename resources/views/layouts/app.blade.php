@@ -133,7 +133,7 @@
             <div class="container">
                 <div class="footer">
 
-                        <a class="footer__link" href="#">
+                        <a class="footer__link" href="https://vk.com/itkidskungur">
                             Обратная связь
                              <img src="{{ asset('img/sferum.svg') }}" alt="sferum">
                         </a>
