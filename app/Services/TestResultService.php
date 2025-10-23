@@ -28,9 +28,8 @@ class TestResultService
             ->count();
 
         if (!($gradingCriteria->isEmpty()) ) {
-            //throw new Exception("Grading criteria not found for the given test.");
 
-            $studentGrade = 2; // Default grade
+            $studentGrade = 2;
 
             if ($correctAnswersCount > 0) {
                 $maxCorrect = $gradingCriteria->max('max_correct_answers');

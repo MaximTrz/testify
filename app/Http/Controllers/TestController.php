@@ -1,105 +1,43 @@
 <?php
 
 namespace App\Http\Controllers;
-
-
-use App\Models\Group;
-use App\Models\Test;
 use App\Models\TestResult;
-use Illuminate\Http\Request;
-
-use Illuminate\Support\Facades\DB;
-
+use App\MoonShine\Resources\TestResultResource;
+use App\Services\TestService;
 use Carbon\Carbon;
-
 use Illuminate\Support\Facades\Auth;
 
-class TestController extends Controller
-{
+class TestController extends Controller{
 
-    public function __construct()
+    protected $testService;
+
+    public function __construct(TestService $testService)
     {
         $this->middleware('auth');
+        $this->testService = $testService;
     }
-
 
     public function index()
     {
-        $user = Auth::user();
-        $group = $user->group;
-        $currentTimestamp = Carbon::now();
-
-        // Получаем список ID тестов, которые пользователь уже выполнил
-        $completedTestIds = TestResult::where('student_id', $user->id)
-            ->pluck('test_id');
-
-        // Получаем доступные тесты, исключая выполненные
-        $tests = $group->tests()
-            ->wherePivot('available_from', '<=', $currentTimestamp)
-            ->wherePivot('available_until', '>=', $currentTimestamp)
-            ->whereNotIn('tests.id', $completedTestIds)
-            ->get();
-
+        $tests = $this->testService->getAvailableTestsForUser(Auth::user());
         return view('tests.inwork', compact('tests'));
     }
 
 
     public function completed()
     {
-        $user = Auth::user();
-
-//        $results = TestResult::where('student_id', $user->id)
-//            ->whereNotNull('grade') // Фильтрация на уровне БД
-//            ->with(['test' => fn($q) => $q->select('id', 'title')])
-//            ->select('id', 'test_id', 'score', 'grade', 'completed_at')
-//            ->orderBy('completed_at', 'desc')
-//            ->get()
-//            ->map(function($item) {
-//                return [
-//                    'test_title' => $item->test->title ?? 'Удаленный тест',
-//                    'score' => $item->score,
-//                    'grade' => $item->grade,
-//                    'completed_at' =>
-//                        Carbon::parse($item->completed_at)->format('d.m.Y H:i')
-//                ];
-//            });
-
-        // Используем paginate() вместо get()
-        $results = TestResult::where('student_id', $user->id)
-            ->whereNotNull('grade') // Фильтр по наличию оценки
-            ->with(['test' => fn($q) => $q->select('id', 'title')]) // Подгружаем название теста
-            ->select('id', 'test_id', 'score', 'grade', 'completed_at', 'test_id') // Добавляем test_id
-            ->orderBy('completed_at', 'desc')
-            ->paginate(10); // Пагинация по 10 записей
-
-        //dd($results);
-
+        $results = $this->testService->getCompletedTestsForUser(Auth::user());
         return view('tests.completed', compact('results'));
     }
 
-    public function show($id)
-    {
-        $user = Auth::user();
+    public function show($id)   {
 
-        $group = $user->group;
-
-        $currentTimestamp = Carbon::now();
-
-        if ($this->hasUserCompletedTest($id)) {
-            abort(403, 'Вы уже выполняли этот тест.');
+        if ($this->testService->hasUserCompletedTest(Auth::user(), $id))
+        {
+            abort(403, 'Вы уже выполняли этот тест или тест недоступен.');
         }
 
-        $test = $group->tests()
-            ->select('tests.id', 'tests.title')
-            ->where('tests.id', $id)
-            ->wherePivot('available_from', '<=', $currentTimestamp)
-            ->wherePivot('available_until', '>=', $currentTimestamp)
-            ->withCount('questions')
-            ->with(['gradingCriteria' => function ($query) {
-                $query->orderBy('min_correct_answers');
-            }])
-            ->first();
-
+        $test = $this->testService->getTestForDisplay(Auth::user(), $id);
 
         if (!$test) {
             abort(404, 'Тест не найден или недоступен.');
@@ -116,62 +54,25 @@ class TestController extends Controller
     public function getTest($id)
     {
         $user = Auth::user();
-        $group = $user->group;
-        $currentTimestamp = Carbon::now();
 
-
-        if ($this->hasUserCompletedTest($id)) {
-            abort(403, 'Вы уже выполняли этот тест.');
+        if ($this->testService->hasUserCompletedTest($user, $id)) {
+            return response()->json([
+                'message' => 'Вы уже выполняли этот тест.'
+            ], 403);
         }
 
-        $test = $group->tests()
-            ->with([
-                'gradingCriteria',
-                'questions.answers' => function ($query) {
-                    $query->select('id', 'question_id', 'answer_text');
-                }
-            ])
-            ->with(['gradingCriteria' => function ($query) {
-                $query->orderBy('min_correct_answers');
-            }])
-            ->where('tests.id', $id)
-            ->wherePivot('available_from', '<=', $currentTimestamp)
-            ->wherePivot('available_until', '>=', $currentTimestamp)
-            ->withPivot('id')
+        $test = $this->testService->getTestWithDetails($user, $id);
 
-            // ->withCount('questions') //
-            ->first();
-
-        if (!$test)
-        {
+        if (!$test) {
             return response()->json([
                 'message' => 'Тест не найден или недоступен.'
             ], 404);
         }
 
-        $test->pivot->available_from = Carbon::parse($test->pivot->available_from)->translatedFormat('d.m.Y H:i');
-        $test->pivot->available_until = Carbon::parse($test->pivot->available_until)->translatedFormat('d.m.Y H:i');
-
-        $testGroupId = $test?->pivot?->id;
-
-        $testResult = TestResult::create([
-            'student_id' => $user->id,
-            'test_id' => $id,
-            'group_id' => $group->id,
-            'teacher_id' => $test->teacher_id,
-            'test_group_id' => $testGroupId
-        ]);
-
-        $test->result_id = $testResult->id;
+        $test = $this->testService->initializeTestAttempt($user, $test);
 
         return response()->json($test);
-    }
 
-    private function hasUserCompletedTest($testId)
-    {
-        return TestResult::where('student_id', Auth::id())
-            ->where('test_id', $testId)
-            ->exists();
     }
 
 }

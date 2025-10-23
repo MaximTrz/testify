@@ -41,39 +41,39 @@ class TestResultController extends Controller
      */
     public function store(Request $request)    {
 
-            $validated = $request->validate([
-                'test_id' => 'required|exists:tests,id',
-            ]);
+        $validated = $request->validate([
+            'test_id' => 'required|exists:tests,id',
+        ]);
 
-            $user = Auth::user();
-            $group[id] = $user->group;
+        $user = Auth::user();
+        $group[id] = $user->group;
 
-            if (!$user) {
-                return response()->json([
-                    'message' => 'Пользователь не авторизован.'
-                ], 401);
-            }
-
-            $existingResult = TestResult::where('student_id', $user->id)
-                ->where('test_id', $validated['test_id'])
-                ->first();
-
-            if ($existingResult) {
-                return response()->json([
-                    'message' => 'Результат для этого теста уже сохранён.'
-                ], 409);
-            }
-
-            $testResult = TestResult::create([
-                'student_id' => $user->id,
-                'test_id' => $validated['test_id'],
-                'group_id' => $group->id
-            ]);
-
+        if (!$user) {
             return response()->json([
-                'message' => 'Результат успешно сохранён.',
-                'test_result' => $testResult
-            ], 201);
+                'message' => 'Пользователь не авторизован.'
+            ], 401);
+        }
+
+        $existingResult = TestResult::where('student_id', $user->id)
+            ->where('test_id', $validated['test_id'])
+            ->first();
+
+        if ($existingResult) {
+            return response()->json([
+                'message' => 'Результат для этого теста уже сохранён.'
+            ], 409);
+        }
+
+        $testResult = TestResult::create([
+            'student_id' => $user->id,
+            'test_id' => $validated['test_id'],
+            'group_id' => $group->id
+        ]);
+
+        return response()->json([
+            'message' => 'Результат успешно сохранён.',
+            'test_result' => $testResult
+        ], 201);
 
     }
 

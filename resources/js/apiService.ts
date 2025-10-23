@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default class ApiService {
-    baseUrl = "http://q922336g.beget.tech";
+    baseUrl = "http://127.0.0.1:8000";
 
     constructor() {
         axios.interceptors.request.use(
