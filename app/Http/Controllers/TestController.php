@@ -142,16 +142,17 @@ class TestController extends Controller
             // ->withCount('questions') //
             ->first();
 
-        $test->pivot->available_from = Carbon::parse($test->pivot->available_from)->translatedFormat('d.m.Y H:i');
-        $test->pivot->available_until = Carbon::parse($test->pivot->available_until)->translatedFormat('d.m.Y H:i');
-
-        $testGroupId = $test?->pivot?->id;
-
-        if (!$test) {
+        if (!$test)
+        {
             return response()->json([
                 'message' => 'Тест не найден или недоступен.'
             ], 404);
         }
+
+        $test->pivot->available_from = Carbon::parse($test->pivot->available_from)->translatedFormat('d.m.Y H:i');
+        $test->pivot->available_until = Carbon::parse($test->pivot->available_until)->translatedFormat('d.m.Y H:i');
+
+        $testGroupId = $test?->pivot?->id;
 
         $testResult = TestResult::create([
             'student_id' => $user->id,

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamp('available_from')->nullable(); // доступно с
             $table->timestamp('available_until')->nullable(); // доступно до
             $table->enum('status', ['available', 'not_available', 'completed'])->default('not_available'); // статус теста
-            $table->timestamps(); // created_at и updated_at
+            $table->timestamps();
         });
     }
 
