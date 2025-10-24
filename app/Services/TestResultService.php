@@ -9,6 +9,23 @@ use Exception;
 
 class TestResultService
 {
+    public function isExistingResult(int $testId, int $studentId):boolean
+    {
+        return TestResult::where('test_id', $testId)
+            ->where('student_id', $studentId)
+            ->exists();
+    }
+
+    public function createTestResult(int $testId, int $studentId, int $groupId): TestResult
+    {
+        $testResult = TestResult::create([
+            'student_id' => $studentId,
+            'test_id' => $testId,
+            'group_id' => $groupId
+        ]);
+        return $testResult;
+    }
+
     /**
      * Calculate and update the test result for a given test and student.
      *
