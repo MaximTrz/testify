@@ -2,126 +2,52 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Answer;
-use App\Models\GradingCriteria;
-use App\Models\StudentAnswer;
-use App\Models\Test;
-use App\Models\TestResult;
-use Illuminate\Http\Request;
+use App\Http\Requests\StudentAnswerRequest;
+use App\Services\StudentAnswerService;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-
 use App\Services\TestResultService;
 
 class StudentAnswerController extends Controller
 {
-
-
-    public function __construct(TestResultService $testResultService)
+    public function __construct(TestResultService $testResultService,
+                                StudentAnswerService $studentAnswerService)
     {
         $this->testResultService = $testResultService;
+        $this->studentAnswerService = $studentAnswerService;
     }
 
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function store(StudentAnswerRequest $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'test_id' => 'required|exists:tests,id',
-            'question_id' => 'required|exists:questions,id',
-            'answer_id' => 'required|exists:answers,id',
-            'last_answer' => 'required|boolean',
-            'result_id' => 'required|exists:test_results,id'
-        ]);
 
         $user = Auth::user();
+        $validated = $request->validated();
 
-        if (!$user) {
+        try {
+            $answer = $this->studentAnswerService->getStudentAnswer($validated['answer_id']);
+
+            $studentAnswer = $this->studentAnswerService->createStudentAnswer(
+                $user->id,
+                $validated['test_id'],
+                $validated['question_id'],
+                $validated['answer_id'],
+                $answer->is_correct,
+                $validated['result_id'],
+            );
+
+            $lastAnswerProcessed = $this->testResultService->handleLastAnswer($validated, $user->id);
+
             return response()->json([
-                'message' => 'Пользователь не авторизован.'
-            ], 401);
+                'message' => 'Ответ успешно сохранен',
+                'result' => $studentAnswer,
+                'last_answer_processed' => $lastAnswerProcessed
+            ], 201);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Ошибка при сохранении ответа: ' . $e->getMessage()
+            ], 400);
         }
 
-        $answer = Answer::find($validated['answer_id']);
-
-        $studentAnswer = StudentAnswer::create([
-            'student_id' => $user->id,
-            'test_id' => $validated['test_id'],
-            'question_id' => $validated['question_id'],
-            'answer_id' =>  $validated['answer_id'],
-            'is_correct' => $answer->is_correct,
-            'test_result_id' => $validated['result_id'],
-        ]);
-
-        //Log::debug('test_result_id', ['test_result_id' => $validated['result_id']]);
-
-        if ($validated['last_answer'] == 1) {
-
-            try {
-                $testResult = $this->testResultService->calculateAndSaveTestResult($validated['test_id'], $user->id);
-            } catch (\Exception $e) {
-                return response()->json([
-                    'message' => $e->getMessage()
-                ], 400);
-            }
-
-        }
-
-        return response()->json([
-            'message' => 'Ответ успешно сохранен',
-            'result' => $studentAnswer,
-            'last_answer' => $validated['last_answer']
-        ], 201);
-
-
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(StudentAnswer $studentAnswer)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(StudentAnswer $studentAnswer)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, StudentAnswer $studentAnswer)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(StudentAnswer $studentAnswer)
-    {
-        //
-    }
 }

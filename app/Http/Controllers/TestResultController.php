@@ -18,16 +18,17 @@ class TestResultController extends Controller
 
         $user = Auth::user();
         $group = $user->group;
+        $validated = $request->validated();
 
         if ($this->testResultService
-            ->isExistingResult($request['test_id'], $user->id)) {
+            ->isExistingResult($validated['test_id'], $user->id)) {
             return response()->json([
                 'message' => 'Результат для этого теста уже сохранён.'
             ], 409);
         }
 
         $testResult = $this->testResultService->createTestResult(
-            $request['test_id'],
+            $validated['test_id'],
             $user->id,
             $group->id,
         );
@@ -43,9 +44,11 @@ class TestResultController extends Controller
     {
 
         $user = Auth::user();
+        $validated = $request->validated();
+
 
         if (!$this->testResultService
-            ->isExistingResult($request['test_id'], $user->id))  {
+            ->isExistingResult($validated['test_id'], $user->id))  {
             return response()->json([
                 'message' => 'Результат теста не найден.'
             ], 404);
@@ -53,7 +56,7 @@ class TestResultController extends Controller
 
 
         try {
-            $testResult = $this->testResultService->calculateAndSaveTestResult($request['test_id'], $user->id);
+            $testResult = $this->testResultService->calculateAndSaveTestResult($validated['test_id'], $user->id);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => $e->getMessage()

@@ -26,14 +26,13 @@ class TestResultService
         return $testResult;
     }
 
-    /**
-     * Calculate and update the test result for a given test and student.
-     *
-     * @param int $testId
-     * @param int $studentId
-     * @return TestResult
-     * @throws Exception
-     */
+    public function handleLastAnswer(array $data, int $user_id): void
+    {
+        if ($data['last_answer'] == 1) {
+            $this->calculateAndSaveTestResult($data['test_id'], $user_id);
+        }
+    }
+
     public function calculateAndSaveTestResult(int $testId, int $studentId): TestResult
     {
         $gradingCriteria = GradingCriteria::where('test_id', $testId)->get();
